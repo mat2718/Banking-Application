@@ -200,30 +200,37 @@ public class Menus {
 			case 1:
 				// view account balance
 				viewBalanceMenu();
+				callBackMenu();
 				break;
 			case 2:
 				// view transaction history
 				transactionHistory();
+				callBackMenu();
 				break;
 			case 3:
 				// deposit money
 				depositMenu();
+				callBackMenu();
 				break;
 			case 4:
 				// withdraw money
 				withdrawMenu();
+				callBackMenu();
 				break;
 			case 5:
 				// transfer money between accounts
 				transferMoneyMenu();
+				callBackMenu();
 				break;
 			case 6:
 				// create new account
 				newAccountMenu();
+				callBackMenu();
 				break;
 			case 7:
 				// close account
 				closeAccountMenu();
+				callBackMenu();
 				break;
 			case 8:
 				// exit the application
@@ -237,6 +244,34 @@ public class Menus {
 		} catch(Exception e) {
 			logger.debug(e);
 			System.out.println("Invalid option. Please try again.");
+		}
+	}
+	
+	public static void callBackMenu() {
+		logger.info("callBackMenu Screen Displayed");
+		try {
+			System.out.println("1. Return to Main Manu.\r\n"
+							+ "2. Exit\r\n"
+							+ "\r\n"
+							+ "Please select an option from the menu above (ex. 1)");
+			int selection = input.nextInt();
+			switch(selection) {
+			case 1:
+				// launch login menu
+				mainMenu();
+				break;
+			case 2:
+				// exit the application
+				System.out.println("Exiting application");
+				System.exit(0);
+				break;
+			default:
+				System.out.println("Invalid option. Please try again.");
+				menuSplashScreen();			
+			}
+		}catch(Exception e) {
+			System.out.println("An unexpected error has occured. Please restart this application.");
+			logger.error("unexpected error: ", e);
 		}
 	}
 	
@@ -292,14 +327,16 @@ public class Menus {
 			System.out.println("Invalid entry.");
 			withdrawMenu();
 		}
+		
 	}
 	
 	// sub menu of mainMenu for transferring money between accounts
 	public static void transferMoneyMenu() throws Exception {
 		logger.info("Transfer Screen Displayed");
-		BankDAO dao = new BankDAO();
-		dao.printBankAccountsDB();
-		System.out.println();
+		withdrawMenu();
+		depositMenu();
+		
+		
 	}
 	
 	//======================================================================================
@@ -384,7 +421,7 @@ public class Menus {
 	
 	// sub menu of mainMenu that shows all available account balances
 	public static void viewBalanceMenu() throws Exception {
-		logger.info("Balance Screen Displayed");
+		logger.info("viewBalanceMenu Screen Displayed");
 		BankDAO dao = new BankDAO();
 		dao.printBankAccountsDB();
 	}

@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
 import customerUI.Menus;
 import util.DBConnection;
 
-/**
+/** persistence layer
  * @author MATTH
  *
  */
@@ -177,7 +177,7 @@ public class BankDAO {
 	public void printBankAccountsDB() throws Exception {
 		logger.debug("Received data to save");
 		Connection con = DBConnection.getInstance().getConnection();
-		String sql = "SELECT id, account_type, balance FROM bank_account WHERE member_id = ? AND status = 1";
+		String sql = "SELECT id, account_type, balance FROM bank_account WHERE member_id = ? AND status = '1'";
 		logger.debug(sql);
 		PreparedStatement pstmt = con.prepareStatement(sql);
 		pstmt.setString(1, Menus.pojo.getEmail());
