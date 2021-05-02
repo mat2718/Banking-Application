@@ -41,6 +41,9 @@ public class Menus {
 		
 	}
 	
+	//======================================================================================
+	// Start up (check connection/ splash screen
+	//======================================================================================
 	public static void checkConnections() {
 		try {
 			logger.info("Getting instance of ConfigReader");
@@ -98,6 +101,10 @@ public class Menus {
 		}
 	}
 	
+	//======================================================================================
+	// options from splash screen
+	//======================================================================================
+		
 	/** registration menu
 	 * pushes to login menu after registration completed
 	 * if registration not complete pushes back to splash screen
@@ -166,6 +173,10 @@ public class Menus {
 		}
 	}
 	
+	//======================================================================================
+	// Main menu
+	//======================================================================================
+	
 	//main menu after login success	
 	public static void mainMenu() {
 		logger.info("Main Menu Screen Displayed");
@@ -229,6 +240,9 @@ public class Menus {
 		}
 	}
 	
+	//======================================================================================
+	// Account balance menus (withdraw, deposit, transfer)
+	//======================================================================================
 	// sub menu of mainMenu for depositing money
 	public static void depositMenu() throws Exception {
 		logger.info("Deposit Screen Displayed");
@@ -281,9 +295,16 @@ public class Menus {
 	}
 	
 	// sub menu of mainMenu for transferring money between accounts
-	public static void transferMoneyMenu() {
+	public static void transferMoneyMenu() throws Exception {
 		logger.info("Transfer Screen Displayed");
+		BankDAO dao = new BankDAO();
+		dao.printBankAccountsDB();
+		System.out.println();
 	}
+	
+	//======================================================================================
+	// Account management (create, close)
+	//======================================================================================
 	
 	// sub menu of mainMenu for creating a new account in postgres
 	// option to deposit money
@@ -352,19 +373,38 @@ public class Menus {
 		}
 	}
 	
-	// sub menu of mainMenu that shows all available accounts to select and show either one or all account balances
-	public static void viewBalanceMenu() {
-		logger.info("Balance Screen Displayed");
-	}
-	
 	// sub menu of mainMenu for closing an account
 	public static void closeAccountMenu() {
 		logger.info("Close Account Screen Displayed");
 	}
 	
+	//======================================================================================
+	// Customer reports (balances, transactions)
+	//======================================================================================
+	
+	// sub menu of mainMenu that shows all available account balances
+	public static void viewBalanceMenu() throws Exception {
+		logger.info("Balance Screen Displayed");
+		BankDAO dao = new BankDAO();
+		dao.printBankAccountsDB();
+	}
+	
 	// sub menu of mainMenu that shows transaction menu
-	public static void transactionHistory() {
+	public static void transactionHistory() throws Exception {
 		logger.info("Transaction Screen Displayed");
+		BankDAO dao = new BankDAO();
+		dao.printBankAccountsDB();
+		System.out.println("Please enter the account number you wish to view the transaction history for.");
+		int selection = input.nextInt();
+		pojo.setBank_id(selection);
+		
+		// check for account permission
+		if(manager.currentBankAccount()) {
+			dao.printTransactionsDB();
+		}else {
+			System.out.println("Invalid input!");
+			transactionHistory();
+		}
 	}
 	
 	

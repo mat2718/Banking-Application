@@ -76,8 +76,8 @@ public class BankDAO {
 	// Account balance changes (withdraw, deposit, transfer)
 	//======================================================================================
 	
-	
-	public void currentBankAccountDB() throws Exception {
+	// pulls current balance
+	public void currentBankAccountbalanceDB() throws Exception {
 		logger.debug("Received data to save");
 		Connection con = DBConnection.getInstance().getConnection();
 		String sql = "SELECT balance FROM bank_account WHERE id = ? AND member_id = ?";
@@ -144,10 +144,6 @@ public class BankDAO {
 		return inserted != 0;
 	}
 	
-	//======================================================================================
-	// Customer reports (balances, transactions)
-	//======================================================================================
-	
 	public boolean recordWithdrawDB() throws Exception {
 		int inserted = 0;
 		logger.debug("Received data to save");
@@ -199,5 +195,42 @@ public class BankDAO {
 
 	}
 	
+	// prints transaction history of selected open account after access is validated
+	public void printTransactionsDB() throws Exception {
+		logger.debug("Received data to save");
+		Connection con = DBConnection.getInstance().getConnection();
+		String sql = "SELECT bank_account_id, description, action_date, amount FROM transaction_history WHERE bank_account_id = ?";
+		logger.debug(sql);
+		PreparedStatement pstmt = con.prepareStatement(sql);
+		pstmt.setInt(1, Menus.pojo.getBank_id());
+		ResultSet report = pstmt.executeQuery();
+		
+		System.out.println("Account# | Description	 | Date		| Amount");
+		System.out.println("------------------------------------------------------------------------");
+
+		while(report.next()) {
+			int id = report.getInt(1);
+			String description = report.getString(2);
+			String date = report.getString(3);
+			float amount = report.getFloat(4);
+			System.out.println(id + " | " + description + " | " + date + " | " + amount);
+		}
+	}
+	
+	// validate access to account
+	public boolean currentBankAccountDB() throws Exception {
+		logger.debug("Received data to save");
+		Connection con = DBConnection.getInstance().getConnection();
+		String sql = "SELECT balance FROM bank_account WHERE id = ? AND member_id = ?";
+		logger.debug(sql);
+		PreparedStatement pstmt = con.prepareStatement(sql);
+		pstmt.setInt(1, Menus.pojo.getBank_id());
+		pstmt.setString(1, Menus.pojo.getEmail());
+		ResultSet checked = pstmt.executeQuery();
+		checked.next();
+		Float result = checked.getFloat(1);
+		logger.debug("Completed check for current balance");
+		return result > 0;
+	}
 	
 }

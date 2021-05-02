@@ -55,7 +55,7 @@ public class BankManager {
 	public boolean deposit() throws Exception {
 		logger.debug("Received customer details update request: ");
 		// delegating call to DAO
-		dao.currentBankAccountDB();
+		dao.currentBankAccountbalanceDB();
 		Menus.pojo.setNew_balance(Menus.pojo.getDeposit() + Menus.pojo.getBalance());
 		return dao.updateBankAccountDB();
 	}	
@@ -64,7 +64,7 @@ public class BankManager {
 	public boolean withdraw() throws Exception {
 		logger.debug("Received customer details update request: ");
 		// delegating call to DAO
-		dao.currentBankAccountDB();
+		dao.currentBankAccountbalanceDB();
 		Menus.pojo.setNew_balance(Menus.pojo.getBalance() - Menus.pojo.getWithdraw());
 		if(Menus.pojo.getNew_balance() < 0) {
 			return false;
@@ -87,6 +87,13 @@ public class BankManager {
 	// Customer reports (balances, transactions)
 	//======================================================================================
 
+	//validate access to account transaction recorded
+	public boolean currentBankAccount() throws Exception {
+		logger.debug("validating access to current account");
+		// delegating call to DAO
+		return dao.currentBankAccountDB();
+	}
+		
 	//validate transaction recorded
 	public boolean recordDeposit() throws Exception {
 		logger.debug("Received bank account creation request");
