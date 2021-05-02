@@ -24,7 +24,7 @@ public class Menus {
 	private static final Logger logger = LogManager.getLogger(Menus.class);
 	
 	static Scanner input = new Scanner(System.in);
-	static BankPOJO pojo = new BankPOJO();
+	public static BankPOJO pojo = new BankPOJO();
 	static BankManager manager = new BankManager();
 	
 	public static void main(String[] args) {
@@ -141,10 +141,19 @@ public class Menus {
 		}while(lastname.length() > 0);
 		pojo.setPassword(lastname);
 		
-		// create account
+		try {
+			// add member account and customer details
+			manager.accountRegistration();
+			manager.addCustomerDetails();
+			
+			// load new account menu
+			newAccountMenu();
+		} catch (Exception e) {
+			System.out.println("An unexpected error has occured.");
+			e.printStackTrace();
+		}
 		
-		// load new account menu
-		newAccountMenu();
+		
 	}
 	
 	// login menu
@@ -250,6 +259,31 @@ public class Menus {
 	// option to deposit money
 	public static void newAccountMenu() {
 		logger.info("New Account Screen Displayed");
+		System.out.println("Would you like to create a new account? (Y/N)\r\n");
+		String selection = input.next();
+		switch(selection.toUpperCase()) {
+		case("Y"):
+			// create a new account
+			try {
+				manager.createBankAccount();
+			}catch(Exception e) {
+				System.out.println("An unexpected error has occured.");
+				e.printStackTrace();
+			}
+			System.out.println("Congrats!");
+			break;
+		case("N"):
+			//
+			break;
+		default:
+			System.out.println("Invalid input. Please try again.");
+			newAccountMenu();
+		}
+	}
+	
+	// deposit option upon the creation of a new account
+	public static void newAccountDeposit() {
+		logger.info("New Account deposit Screen Displayed");
 	}
 	
 	// sub menu of mainMenu that shows all available accounts to select and show either one or all account balances
