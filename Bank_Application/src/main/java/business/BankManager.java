@@ -19,9 +19,7 @@ public class BankManager {
 	//======================================================================================
 	// Registering an account
 	//======================================================================================
-	
-	//NOTE: account creation/ deposit are further down as these are standard options
-	
+		
 	// validate insert into account table
 	public boolean accountRegistration() throws Exception {
 		logger.debug("Received account creation request: ");

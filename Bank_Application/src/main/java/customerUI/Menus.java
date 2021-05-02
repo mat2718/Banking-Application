@@ -31,12 +31,26 @@ public class Menus {
 		logger.info("Application Started");
 		
 		logger.info("Checking connections");
-		checkConnections();
+		try {
+			logger.info("Getting instance of ConfigReader");
+			ConfigReader.getInstance();
+			logger.info("ConfigReader instance established");
+			logger.info("Getting instance of DBConnection");
+			DBConnection.getInstance();
+			logger.info("DBConnection instance established");
+			menuSplashScreen();
+		} catch (Exception e) {
+			if (e instanceof SQLException) {
+				System.out.println("ERROR: " + e.getLocalizedMessage());
+				System.exit(0);
+			}
+			logger.error("Unexpected Error", e);
+		} finally {
+			input.close();
+		}
 		
-		// calls the application splash screen
-		menuSplashScreen();
-			
-
+		logger.info("Application Stopped");
+		
 	}
 	
 	public static void checkConnections() {
@@ -64,9 +78,7 @@ public class Menus {
 	public static void menuSplashScreen() {
 		logger.info("Splash Screen Displayed");
 		try {
-			System.out.println("Greeting!"
-							+ "\r\n"
-							+ "Login Menu\r\n"
+			System.out.println("Login Menu\r\n"
 							+ "================================\r\n"
 							+ "1. Login\r\n"
 							+ "2. Register for Account\r\n"
@@ -145,9 +157,8 @@ public class Menus {
 			// add member account and customer details
 			manager.accountRegistration();
 			manager.addCustomerDetails();
-			
-			// load new account menu
-			newAccountMenu();
+			System.out.println("Congrats! Your all registered.");
+			loginMenu();
 		} catch (Exception e) {
 			System.out.println("An unexpected error has occured.");
 			e.printStackTrace();
@@ -264,6 +275,27 @@ public class Menus {
 		switch(selection.toUpperCase()) {
 		case("Y"):
 			// create a new account
+			System.out.println("Account Types\r\n"
+					+ "\r\n"
+					+ "1. Checking\r\n"
+					+ "2. Savings\r\n"
+					+ "Select type of account:\r\n");
+			int acc = input.nextInt();
+			switch(acc) {
+			case 1:
+				// set POJO to checking
+				pojo.setAccount_type("Checking");
+				newAccountDeposit();
+				break;
+			case 2:
+				// set POJO to savings
+				pojo.setAccount_type("Savings");
+				newAccountDeposit();
+				break;
+			default:
+				System.out.println("Invalid input!");
+			}
+			
 			try {
 				manager.createBankAccount();
 			}catch(Exception e) {
@@ -284,6 +316,21 @@ public class Menus {
 	// deposit option upon the creation of a new account
 	public static void newAccountDeposit() {
 		logger.info("New Account deposit Screen Displayed");
+		System.out.println("Would you like to deposit money into your new account? (Y/N)\r\n");
+		String selection = input.next();
+		switch(selection.toUpperCase()) {
+		case("Y"):
+			System.out.println("Input amount to deposit.");
+			int dep = input.nextInt();
+			pojo.setDeposit(dep);
+			break;
+		case("N"):
+			// set POJO to savings
+			System.out.println("No worries. You can always deposit money later.");
+			break;
+		default:
+			System.out.println("Invalid input!");
+		}
 	}
 	
 	// sub menu of mainMenu that shows all available accounts to select and show either one or all account balances

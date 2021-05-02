@@ -13,7 +13,8 @@ public class BankPOJO {
 	private String sending_bank_id;
 	private String recieving_bank_id;	
 	private String description;
-	private String transaction_date;
+	private float deposit;
+	private float withdraw;
 			
 	public String getEmail() {
 		return email;
@@ -69,18 +70,25 @@ public class BankPOJO {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public String getTransaction_date() {
-		return transaction_date;
-	}
-	public void setTransaction_date(String transaction_date) {
-		this.transaction_date = transaction_date;
-	}
 	public String getPassword() {
 		return password;
 	}
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	public float getDeposit() {
+		return deposit;
+	}
+	public void setDeposit(float deposit) {
+		this.deposit = deposit;
+	}
+	public float getWithdraw() {
+		return withdraw;
+	}
+	public void setWithdraw(float withdraw) {
+		this.withdraw = withdraw;
+	}
+	
 	
 
 
