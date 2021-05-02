@@ -44,11 +44,12 @@ public class BankDAO {
 		int inserted = 0;
 		logger.debug("Received data to save");
 		Connection con = DBConnection.getInstance().getConnection();
-		String sql = "INSERT INTO customer_information (last_name, first_name) VALUES (?,?)";
+		String sql = "INSERT INTO customer_information (last_name, first_name, member_id) VALUES (?,?,?)";
 		logger.debug(sql);
 		PreparedStatement pstmt = con.prepareStatement(sql);
 		pstmt.setString(1, Menus.pojo.getLast_name());
 		pstmt.setString(2, Menus.pojo.getFirst_name());
+		pstmt.setString(3, Menus.pojo.getEmail());
 		inserted = pstmt.executeUpdate();
 		logger.debug("Inserted customer account: " + inserted);
 		return inserted != 0;
