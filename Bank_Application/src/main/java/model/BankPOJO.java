@@ -8,10 +8,11 @@ public class BankPOJO {
 	private String first_name;
 	private String last_name;
 	private String account_type;
-	private String balance;
-	private String bank_id;
-	private String sending_bank_id;
-	private String recieving_bank_id;	
+	private Float balance;
+	private Float new_balance;
+	private int bank_id;
+	private int sending_bank_id;
+	private int recieving_bank_id;	
 	private String description;
 	private float deposit;
 	private float withdraw;
@@ -40,28 +41,28 @@ public class BankPOJO {
 	public void setAccount_type(String account_type) {
 		this.account_type = account_type;
 	}
-	public String getBalance() {
+	public Float getBalance() {
 		return balance;
 	}
-	public void setBalance(String balance) {
+	public void setBalance(Float balance) {
 		this.balance = balance;
 	}
-	public String getBank_id() {
+	public int getBank_id() {
 		return bank_id;
 	}
-	public void setBank_id(String bank_id) {
+	public void setBank_id(int bank_id) {
 		this.bank_id = bank_id;
 	}
-	public String getSending_bank_id() {
+	public int getSending_bank_id() {
 		return sending_bank_id;
 	}
-	public void setSending_bank_id(String sending_bank_id) {
+	public void setSending_bank_id(int sending_bank_id) {
 		this.sending_bank_id = sending_bank_id;
 	}
-	public String getRecieving_bank_id() {
+	public int getRecieving_bank_id() {
 		return recieving_bank_id;
 	}
-	public void setRecieving_bank_id(String recieving_bank_id) {
+	public void setRecieving_bank_id(int recieving_bank_id) {
 		this.recieving_bank_id = recieving_bank_id;
 	}
 	public String getDescription() {
@@ -87,6 +88,12 @@ public class BankPOJO {
 	}
 	public void setWithdraw(float withdraw) {
 		this.withdraw = withdraw;
+	}
+	public Float getNew_balance() {
+		return new_balance;
+	}
+	public void setNew_balance(Float new_balance) {
+		this.new_balance = new_balance;
 	}
 	
 	

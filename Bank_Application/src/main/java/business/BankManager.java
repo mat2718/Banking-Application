@@ -5,6 +5,8 @@ package business;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import customerUI.Menus;
 import dataAccessObject.BankDAO;
 
 
@@ -49,18 +51,34 @@ public class BankManager {
 	// Account balance changes (withdraw, deposit, transfer)
 	//======================================================================================
 	
+	// validate update of deposit
+	public boolean deposit() throws Exception {
+		logger.debug("Received customer details update request: ");
+		// delegating call to DAO
+		dao.currentBankAccountDB();
+		Menus.pojo.setNew_balance(Menus.pojo.getDeposit() + Menus.pojo.getBalance());
+		return dao.updateBankAccountDB();
+	}	
 	//======================================================================================
 	// Account management (create, close)
 	//======================================================================================
 	
 	// validate creation of new account
-		public boolean createBankAccount() throws Exception {
-			logger.debug("Received bank account creation request");
-			// delegating call to DAO
-			return dao.createBankAccountDB();
-		}
+	public boolean createBankAccount() throws Exception {
+		logger.debug("Received bank account creation request");
+		// delegating call to DAO
+		return dao.createBankAccountDB();
+	}
 		
 	//======================================================================================
 	// Customer reports (balances, transactions)
 	//======================================================================================
+
+	//validate transaction recorded
+	public boolean recordTransaction() throws Exception {
+		logger.debug("Received bank account creation request");
+		// delegating call to DAO
+		return dao.recordTransactionDB();
+	}		
+		
 }

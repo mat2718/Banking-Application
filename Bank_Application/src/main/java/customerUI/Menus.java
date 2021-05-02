@@ -9,6 +9,7 @@ import business.BankManager;
 import model.BankPOJO;
 import util.ConfigReader;
 import util.DBConnection;
+import dataAccessObject.*;
 
 /**
  * Presentation Layer
@@ -109,7 +110,6 @@ public class Menus {
 		// collect email
 		System.out.println("Please enter your email:\r\n");
 		String username = input.next();
-		System.out.println(username.length());
 		pojo.setEmail(username);
 		
 		// collect password
@@ -120,12 +120,12 @@ public class Menus {
 		// collect first name
 		System.out.println("Please enter your first name:\r\n");
 		String firstname = input.next();
-		pojo.setPassword(firstname);
+		pojo.setFirst_name(firstname);
 		
 		//collect last name
 		System.out.println("Please enter your last name:\r\n");
 		String lastname = input.next();
-		pojo.setPassword(lastname);
+		pojo.setLast_name(lastname);
 		
 		try {
 			// add member account and customer details
@@ -230,8 +230,26 @@ public class Menus {
 	}
 	
 	// sub menu of mainMenu for depositing money
-	public static void depositMenu() {
+	public static void depositMenu() throws Exception {
 		logger.info("Deposit Screen Displayed");
+		BankDAO dao = new BankDAO();
+		dao.printBankAccountsDB();
+		System.out.println("Please enter the account number you wish to deposit to.");
+		int selection = input.nextInt();
+		pojo.setBank_id(selection);
+		pojo.setRecieving_bank_id(selection);
+		System.out.println("Please enter the amount you want to deposit.");
+		float deposit = input.nextFloat();
+		if(deposit > 0) {
+			pojo.setDeposit(deposit);
+			manager.deposit();
+			
+			dao.printNewBalanceDB();
+		}else {
+			System.out.println("Invalid entry.");
+			depositMenu();
+		}
+		
 	}
 	
 	// sub menu of mainMenu for withdrawing money

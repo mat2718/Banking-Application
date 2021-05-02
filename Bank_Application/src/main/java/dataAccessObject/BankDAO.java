@@ -60,15 +60,14 @@ public class BankDAO {
 	
 	
 	public boolean loginValidationDB() throws Exception {
-		logger.debug("Received data to save");
+		logger.debug("comparing login credentials with database");
 		Connection con = DBConnection.getInstance().getConnection();
 		String sql = "SELECT email,password FROM member_account WHERE email = ?";
 		logger.debug(sql);
 		PreparedStatement pstmt = con.prepareStatement(sql);
 		pstmt.setString(1, Menus.pojo.getEmail());
 		ResultSet checked = pstmt.executeQuery();
-		
-		
+		checked.next();
 		logger.debug("Member password is: ", checked.getString(2)," Password input was: ", Menus.pojo.getPassword());
 		return checked.getString(2).equals(Menus.pojo.getPassword());
 	}
@@ -77,19 +76,54 @@ public class BankDAO {
 	// Account balance changes (withdraw, deposit, transfer)
 	//======================================================================================
 	
+	
+	public void currentBankAccountDB() throws Exception {
+		logger.debug("Received data to save");
+		Connection con = DBConnection.getInstance().getConnection();
+		String sql = "SELECT balance FROM bank_account WHERE id = ? AND member_id = ?";
+		logger.debug(sql);
+		PreparedStatement pstmt = con.prepareStatement(sql);
+		pstmt.setInt(1, Menus.pojo.getBank_id());
+		pstmt.setString(2, Menus.pojo.getEmail());
+		ResultSet checked = pstmt.executeQuery();
+		checked.next();
+		Float result = checked.getFloat(1);
+		Menus.pojo.setBalance(result);
+		logger.debug("Completed check for current balance");
+	}
+	
 	public boolean updateBankAccountDB() throws Exception {
 		int inserted = 0;
 		logger.debug("Received data to save");
 		Connection con = DBConnection.getInstance().getConnection();
-		String sql = "INSERT INTO bank_account (account_type, balance, email) VALUES (?,?)";
+		String sql = "UPDATE bank_account SELECT balance = ? WHERE id = ?";
 		logger.debug(sql);
 		PreparedStatement pstmt = con.prepareStatement(sql);
-		pstmt.setString(1, Menus.pojo.getEmail());
-		pstmt.setString(2, Menus.pojo.getPassword());
+		pstmt.setFloat(1, Menus.pojo.getNew_balance());
+		pstmt.setInt(2, Menus.pojo.getBank_id());
 		inserted = pstmt.executeUpdate();
 		logger.debug("Inserted member account: " + inserted);
 		return inserted != 0;
 	}
+	
+	public void printNewBalanceDB() throws Exception {
+		logger.debug("Received data to save");
+		Connection con = DBConnection.getInstance().getConnection();
+		String sql = "SELECT id, account_type, balance FROM bank_account WHERE id = ";
+		logger.debug(sql);
+		PreparedStatement pstmt = con.prepareStatement(sql);
+		pstmt.setInt(1, Menus.pojo.getBank_id());
+		ResultSet report = pstmt.executeQuery();
+		System.out.println("Account# | Account Type	 | Balance");
+		System.out.println("------------------------------------------------------------------------");
+		while(report.next()) {
+			String id = report.getString(1);
+			String type = report.getString(2);
+			String balance = report.getString(3);
+			System.out.println(id + " | " + type + " | " + balance);
+		}		
+	}
+	
 	
 	//======================================================================================
 	// Account management (create, close)
@@ -127,4 +161,41 @@ public class BankDAO {
 		logger.debug("Inserted member account: " + inserted);
 		return inserted != 0;
 	}
+	
+	public boolean recordTransactionDB() throws Exception {
+		int inserted = 0;
+		logger.debug("Received data to save");
+		Connection con = DBConnection.getInstance().getConnection();
+		String sql = "INSERT INTO bank_account (account_type, balance, email) VALUES (?,?)";
+		logger.debug(sql);
+		PreparedStatement pstmt = con.prepareStatement(sql);
+		pstmt.setString(1, Menus.pojo.getEmail());
+		pstmt.setString(2, Menus.pojo.getPassword());
+		inserted = pstmt.executeUpdate();
+		logger.debug("Inserted member account: " + inserted);
+		return inserted != 0;
+	}
+	
+	public void printBankAccountsDB() throws Exception {
+		logger.debug("Received data to save");
+		Connection con = DBConnection.getInstance().getConnection();
+		String sql = "SELECT id, account_type, balance FROM bank_account WHERE member_id = ? AND status = 1";
+		logger.debug(sql);
+		PreparedStatement pstmt = con.prepareStatement(sql);
+		pstmt.setString(1, Menus.pojo.getEmail());
+		ResultSet report = pstmt.executeQuery();
+		
+		System.out.println("Account# | Account Type	 | Balance");
+		System.out.println("------------------------------------------------------------------------");
+
+		while(report.next()) {
+			String id = report.getString(1);
+			String type = report.getString(2);
+			String balance = report.getString(3);
+			System.out.println(id + " | " + type + " | " + balance);
+		}
+
+	}
+	
+	
 }
