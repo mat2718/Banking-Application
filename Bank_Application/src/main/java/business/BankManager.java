@@ -38,6 +38,13 @@ public class BankManager {
 	// Validating Login credentials
 	//======================================================================================
 	
+	// validate insert into customer table
+	public boolean loginValidation() throws Exception {
+		logger.debug("Received customer details update request: ");
+		// delegating call to DAO
+		return dao.loginValidationDB();
+	}
+			
 	//======================================================================================
 	// Account balance changes (withdraw, deposit, transfer)
 	//======================================================================================

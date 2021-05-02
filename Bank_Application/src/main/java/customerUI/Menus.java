@@ -31,24 +31,11 @@ public class Menus {
 		logger.info("Application Started");
 		
 		logger.info("Checking connections");
-		try {
-			logger.info("Getting instance of ConfigReader");
-			ConfigReader.getInstance();
-			logger.info("ConfigReader instance established");
-			logger.info("Getting instance of DBConnection");
-			DBConnection.getInstance();
-			logger.info("DBConnection instance established");
-			menuSplashScreen();
-		} catch (Exception e) {
-			if (e instanceof SQLException) {
-				System.out.println("ERROR: " + e.getLocalizedMessage());
-				System.exit(0);
-			}
-			logger.error("Unexpected Error", e);
-		} finally {
-			input.close();
-		}
+		checkConnections();
 		
+		menuSplashScreen();
+
+		input.close();
 		logger.info("Application Stopped");
 		
 	}
@@ -68,10 +55,10 @@ public class Menus {
 			}
 			logger.error("Unexpected Error", e);
 		} finally {
-			input.close();
+			//input.close();
 		}
 		
-		logger.info("Application Stopped");
+		//logger.info("Application Stopped");
 	}
 	
 	// this is the start of the application menu
@@ -118,39 +105,26 @@ public class Menus {
 	 */
 	public static void registrationMenu() {
 		logger.info("Registration Screen Displayed");
-		
-		// creating local variables
-		String firstname;
-		String lastname;
-		String username;
-		String pswd;
-		
+				
 		// collect email
-		do {
-			System.out.println("Please enter your email:\r\n");
-			username = input.next();
-		}while(username.length() > 0);
+		System.out.println("Please enter your email:\r\n");
+		String username = input.next();
+		System.out.println(username.length());
 		pojo.setEmail(username);
 		
 		// collect password
-		do {
-			System.out.println("Please enter password:\r\n");
-			pswd = input.next();
-		}while(pswd.length() > 0);
+		System.out.println("Please enter password:\r\n");
+		String pswd = input.next();
 		pojo.setPassword(pswd);
 		
 		// collect first name
-		do {
-			System.out.println("Please enter your first name:\r\n");
-			firstname = input.next();
-		}while(firstname.length() > 0);
+		System.out.println("Please enter your first name:\r\n");
+		String firstname = input.next();
 		pojo.setPassword(firstname);
 		
 		//collect last name
-		do {
-			System.out.println("Please enter your last name:\r\n");
-			lastname = input.next();
-		}while(lastname.length() > 0);
+		System.out.println("Please enter your last name:\r\n");
+		String lastname = input.next();
 		pojo.setPassword(lastname);
 		
 		try {
@@ -158,12 +132,12 @@ public class Menus {
 			manager.accountRegistration();
 			manager.addCustomerDetails();
 			System.out.println("Congrats! Your all registered.");
-			loginMenu();
 		} catch (Exception e) {
 			System.out.println("An unexpected error has occured.");
-			e.printStackTrace();
+			//e.printStackTrace();
+			logger.error("Unexpected error: ", e);
 		}
-		
+		menuSplashScreen();
 		
 	}
 	
@@ -171,21 +145,25 @@ public class Menus {
 	// check postgres via JDBC for valid credentials
 	public static void loginMenu() {
 		logger.info("Login Screen Displayed");
-		String username = "";
-		String pswd = "";
-		do {
-			System.out.println("Please enter email:\r\n");
-			username = input.next();
-		}while(username.length() > 0);
-		
-		do {
-			System.out.println("Please enter password:\r\n");
-			pswd = input.next();
-		}while(pswd.length() > 0);
-		
+		String username;
+		String pswd;
+		System.out.println("Please enter your email:\r\n");
+		username = input.next();
+		System.out.println("Please enter your password:\r\n");
+		pswd = input.next();
 		pojo.setEmail(username);
 		pojo.setPassword(pswd);
 		
+		try {
+			if(manager.loginValidation()) {
+				mainMenu();
+			}else {
+				System.out.println("Login Failed. Please try Again.");
+				loginMenu();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	//main menu after login success	

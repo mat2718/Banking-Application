@@ -14,7 +14,7 @@ public class ConfigReader {
 	private static ConfigReader instance;
 	private Properties config = new Properties();
 	
-	final String CONFIG_FILE_PATH = "C:\\Users\\MATTH\\eclipse-workspace\\Bank_Application\\src\\main\\resources\\config.properties";
+	final String CONFIG_FILE_PATH = "C:\\Users\\MATTH\\git\\Banking-Application\\Bank_Application\\src\\main\\resources\\config.properties";
 	
 	// private constructor
 	private ConfigReader() throws Exception {
