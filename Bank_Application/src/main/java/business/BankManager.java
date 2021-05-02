@@ -59,6 +59,19 @@ public class BankManager {
 		Menus.pojo.setNew_balance(Menus.pojo.getDeposit() + Menus.pojo.getBalance());
 		return dao.updateBankAccountDB();
 	}	
+	
+	// validate update of withdraw
+	public boolean withdraw() throws Exception {
+		logger.debug("Received customer details update request: ");
+		// delegating call to DAO
+		dao.currentBankAccountDB();
+		Menus.pojo.setNew_balance(Menus.pojo.getBalance() - Menus.pojo.getWithdraw());
+		if(Menus.pojo.getNew_balance() < 0) {
+			return false;
+		}else {
+			return dao.updateBankAccountDB();
+		}
+	}
 	//======================================================================================
 	// Account management (create, close)
 	//======================================================================================
@@ -75,10 +88,24 @@ public class BankManager {
 	//======================================================================================
 
 	//validate transaction recorded
-	public boolean recordTransaction() throws Exception {
+	public boolean recordDeposit() throws Exception {
 		logger.debug("Received bank account creation request");
 		// delegating call to DAO
-		return dao.recordTransactionDB();
-	}		
+		return dao.recordDepositDB();
+	}	
+	
+	// validate transaction recorded
+	public boolean recordwithdraw() throws Exception {
+		logger.debug("Received bank account creation request");
+		// delegating call to DAO
+		return dao.recordDepositDB();
+	}
+
+	// validate transaction recorded
+	public boolean recordtransfer() throws Exception {
+		logger.debug("Received bank account creation request");
+		// delegating call to DAO
+		return dao.recordDepositDB();
+	}	
 		
 }

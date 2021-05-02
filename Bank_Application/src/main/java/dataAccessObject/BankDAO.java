@@ -148,29 +148,31 @@ public class BankDAO {
 	// Customer reports (balances, transactions)
 	//======================================================================================
 	
-	public boolean depositDB() throws Exception {
+	public boolean recordWithdrawDB() throws Exception {
 		int inserted = 0;
 		logger.debug("Received data to save");
 		Connection con = DBConnection.getInstance().getConnection();
-		String sql = "INSERT INTO bank_account (account_type, balance, email) VALUES (?,?)";
+		String sql = "INSERT INTO transaction_history (description, amount, bank_account_id) VALUES (?,?,?)";
 		logger.debug(sql);
 		PreparedStatement pstmt = con.prepareStatement(sql);
-		pstmt.setString(1, Menus.pojo.getEmail());
-		pstmt.setString(2, Menus.pojo.getPassword());
+		pstmt.setString(1, Menus.pojo.getDescription());
+		pstmt.setFloat(1, Menus.pojo.getWithdraw());
+		pstmt.setInt(3, Menus.pojo.getBank_id());
 		inserted = pstmt.executeUpdate();
 		logger.debug("Inserted member account: " + inserted);
 		return inserted != 0;
 	}
 	
-	public boolean recordTransactionDB() throws Exception {
+	public boolean recordDepositDB() throws Exception {
 		int inserted = 0;
 		logger.debug("Received data to save");
 		Connection con = DBConnection.getInstance().getConnection();
-		String sql = "INSERT INTO bank_account (account_type, balance, email) VALUES (?,?)";
+		String sql = "INSERT INTO transaction_history (description, amount, bank_account_id) VALUES (?,?,?)";
 		logger.debug(sql);
 		PreparedStatement pstmt = con.prepareStatement(sql);
-		pstmt.setString(1, Menus.pojo.getEmail());
-		pstmt.setString(2, Menus.pojo.getPassword());
+		pstmt.setString(1, Menus.pojo.getDescription());
+		pstmt.setFloat(1, Menus.pojo.getDeposit());
+		pstmt.setInt(3, Menus.pojo.getBank_id());
 		inserted = pstmt.executeUpdate();
 		logger.debug("Inserted member account: " + inserted);
 		return inserted != 0;

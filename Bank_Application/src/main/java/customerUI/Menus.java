@@ -200,7 +200,7 @@ public class Menus {
 				break;
 			case 4:
 				// withdraw money
-				withdrawelMenu();
+				withdrawMenu();
 				break;
 			case 5:
 				// transfer money between accounts
@@ -238,12 +238,13 @@ public class Menus {
 		int selection = input.nextInt();
 		pojo.setBank_id(selection);
 		pojo.setRecieving_bank_id(selection);
+		pojo.setDescription("Deposit");
 		System.out.println("Please enter the amount you want to deposit.");
 		float deposit = input.nextFloat();
 		if(deposit > 0) {
 			pojo.setDeposit(deposit);
 			manager.deposit();
-			
+			manager.recordDeposit();
 			dao.printNewBalanceDB();
 		}else {
 			System.out.println("Invalid entry.");
@@ -253,8 +254,30 @@ public class Menus {
 	}
 	
 	// sub menu of mainMenu for withdrawing money
-	public static void withdrawelMenu() {
+	public static void withdrawMenu() throws Exception {
 		logger.info("Withdraw Screen Displayed");
+		BankDAO dao = new BankDAO();
+		dao.printBankAccountsDB();
+		System.out.println("Please enter the account number you wish to withdraw from.");
+		int selection = input.nextInt();
+		pojo.setBank_id(selection);
+		pojo.setRecieving_bank_id(selection);
+		pojo.setDescription("Withdraw");
+		System.out.println("Please enter the amount you want to withdraw.");
+		float withdraw = input.nextFloat();
+		if(withdraw > 0) {
+			pojo.setWithdraw(withdraw);
+			if(manager.withdraw()) {
+				manager.withdraw();
+				dao.printNewBalanceDB();
+			}else {
+				System.out.println("invalid entry.");
+				withdrawMenu();
+			}
+		}else {
+			System.out.println("Invalid entry.");
+			withdrawMenu();
+		}
 	}
 	
 	// sub menu of mainMenu for transferring money between accounts
