@@ -73,9 +73,14 @@ public class BankManager {
 		// delegating call to DAO
 		dao.currentBankAccountbalanceDB();
 		Menus.pojo.setNewBalance(Menus.pojo.getBalance() - Menus.pojo.getWithdraw());
+		System.out.println(Menus.pojo.getBalance());
+		System.out.println(Menus.pojo.getWithdraw());
+		System.out.println(Menus.pojo.getNewBalance());
 		if(Menus.pojo.getNewBalance() < 0) {
+			logger.debug("Proposed new balance was less than zero. exiting transaction.");
 			return false;
 		}else {
+			logger.debug("Proposed value above zero. Executing withdraw");
 			return dao.updateBankAccountDB();
 		}
 	}
@@ -112,7 +117,7 @@ public class BankManager {
 	public boolean recordwithdraw() throws Exception {
 		logger.debug("Received bank account creation request");
 		// delegating call to DAO
-		return dao.recordDepositDB();
+		return dao.recordWithdrawDB();
 	}
 
 	// validate transaction recorded

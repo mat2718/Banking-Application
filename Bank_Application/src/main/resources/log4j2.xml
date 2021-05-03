@@ -3,11 +3,11 @@
     
     <Appenders>
         <!-- <Console name="LogToConsole" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36}(%L) - %msg%n"/>
+            <PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss}] [%t] [%M] %-5level %logger{36}(%L) - %msg%n"/>
         </Console> -->
 		<File name="LogToFile" fileName="c:\Temp\Banking_Application.log">
             <PatternLayout>
-                <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+                <Pattern>[%d{yyyy-MM-d HH:mm:ss}] %p %c{1.} [%M] [%t] %m%n</Pattern>
             </PatternLayout>
         </File>
     </Appenders>

@@ -121,14 +121,14 @@ public class BankDAO {
 		checked.next();
 		Float result = checked.getFloat(1);
 		Menus.pojo.setBalance(result);
-		logger.debug("Completed check for current balance");
+		logger.debug("Completed check for current balance. result was: ",result);
 	}
 	
 	public boolean updateBankAccountDB() throws Exception {
 		int inserted = 0;
 		logger.debug("Received data to save");
 		Connection con = DBConnection.getInstance().getConnection();
-		String sql = "UPDATE bank_account SELECT balance = ? WHERE id = ?";
+		String sql = "UPDATE bank_account SET balance = ? WHERE id = ?";
 		logger.debug(sql);
 		PreparedStatement pstmt = con.prepareStatement(sql);
 		pstmt.setFloat(1, Menus.pojo.getNewBalance());
@@ -141,18 +141,16 @@ public class BankDAO {
 	public void printNewBalanceDB() throws Exception {
 		logger.debug("Received data to save");
 		Connection con = DBConnection.getInstance().getConnection();
-		String sql = "SELECT id, account_type, balance FROM bank_account WHERE id = ";
+		String sql = "SELECT id, account_type, balance FROM bank_account WHERE id = ?";
 		logger.debug(sql);
 		PreparedStatement pstmt = con.prepareStatement(sql);
 		pstmt.setInt(1, Menus.pojo.getBankId());
 		ResultSet report = pstmt.executeQuery();
-		System.out.println("Account# | Account Type	 | Balance");
-		System.out.println("------------------------------------------------------------------------");
 		while(report.next()) {
 			String id = report.getString(1);
 			String type = report.getString(2);
 			String balance = report.getString(3);
-			System.out.println(id + " | " + type + " | " + balance);
+			System.out.println("Account: (" + id + ") " + type + " has a new balance of $" + balance);
 		}		
 	}
 	
@@ -184,7 +182,7 @@ public class BankDAO {
 		logger.debug(sql);
 		PreparedStatement pstmt = con.prepareStatement(sql);
 		pstmt.setString(1, Menus.pojo.getDescription());
-		pstmt.setFloat(1, Menus.pojo.getWithdraw());
+		pstmt.setFloat(2, Menus.pojo.getWithdraw());
 		pstmt.setInt(3, Menus.pojo.getBankId());
 		inserted = pstmt.executeUpdate();
 		logger.debug("Inserted member account: " + inserted);
@@ -199,7 +197,7 @@ public class BankDAO {
 		logger.debug(sql);
 		PreparedStatement pstmt = con.prepareStatement(sql);
 		pstmt.setString(1, Menus.pojo.getDescription());
-		pstmt.setFloat(1, Menus.pojo.getDeposit());
+		pstmt.setFloat(2, Menus.pojo.getDeposit());
 		pstmt.setInt(3, Menus.pojo.getBankId());
 		inserted = pstmt.executeUpdate();
 		logger.debug("Inserted member account: " + inserted);
@@ -257,7 +255,7 @@ public class BankDAO {
 		logger.debug(sql);
 		PreparedStatement pstmt = con.prepareStatement(sql);
 		pstmt.setInt(1, Menus.pojo.getBankId());
-		pstmt.setString(1, Menus.pojo.getEmail());
+		pstmt.setString(2, Menus.pojo.getEmail());
 		ResultSet checked = pstmt.executeQuery();
 		checked.next();
 		Float result = checked.getFloat(1);

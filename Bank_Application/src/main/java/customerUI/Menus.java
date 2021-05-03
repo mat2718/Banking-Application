@@ -245,6 +245,7 @@ public class Menus {
 		} catch(Exception e) {
 			logger.debug(e);
 			System.out.println("Invalid option. Please try again.");
+			mainMenu();
 		}
 	}
 	
@@ -268,7 +269,7 @@ public class Menus {
 				break;
 			default:
 				System.out.println("Invalid option. Please try again.");
-				menuSplashScreen();			
+				callBackMenu();			
 			}
 		}catch(Exception e) {
 			System.out.println("An unexpected error has occured. Please restart this application.");
@@ -318,7 +319,6 @@ public class Menus {
 		if(withdraw > 0) {
 			pojo.setWithdraw(withdraw);
 			if(manager.withdraw()) {
-				manager.withdraw();
 				dao.printNewBalanceDB();
 			}else {
 				System.out.println("invalid entry.");
