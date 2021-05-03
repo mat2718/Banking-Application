@@ -22,38 +22,26 @@ public class BankManager {
 	// Registering an account
 	//======================================================================================
 	
-	// 
-	public boolean accountRegistration() {
-		try {
-			if(addMemberAccount()) {
-				logger.info("Member account added.");
-				if(addCustomerDetails()) {
-					logger.info("Customer info added.");
-				}else {
-					
-				}
-			}else {
-				
-			}
-		}catch(Exception e) {
-			
-		}
-		return true;
-	}
-	
-	// validate insert into account table
-	public boolean addMemberAccount() throws Exception {
+	// call upon account registration in DB
+	public boolean accountRegistration() throws Exception {
 		logger.debug("Received account creation request: ");
-		// delegating call to DAO
-		return dao.addMemberAccountDB();
+		
+		return dao.accountRegistrationDB();
 	}
 	
-	// validate insert into customer table
-	public boolean addCustomerDetails() throws Exception {
-		logger.debug("Received customer details update request: ");
-		// delegating call to DAO
-		return dao.addCustomerDetailsDB();
-	}
+//	// validate insert into account table
+//	public boolean addMemberAccount() throws Exception {
+//		logger.debug("Received account creation request: ");
+//		// delegating call to DAO
+//		return dao.addMemberAccountDB();
+//	}
+//	
+//	// validate insert into customer table
+//	public boolean addCustomerDetails() throws Exception {
+//		logger.debug("Received customer details update request: ");
+//		// delegating call to DAO
+//		return dao.addCustomerDetailsDB();
+//	}
 		
 	//======================================================================================
 	// Validating Login credentials

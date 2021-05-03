@@ -31,7 +31,7 @@ public class BankDAO {
 				logger.info("Customer info added.");
 			}else {
 				//attempt delete for member account
-				
+				deleteMemberAccountDB();
 				return false;
 			}
 		}else {
@@ -40,6 +40,7 @@ public class BankDAO {
 		return true;
 	}
 	// adds the email and password to the member account table
+	
 	public boolean addMemberAccountDB() throws Exception {
 		int inserted = 0;
 		logger.debug("Received data to save");
@@ -70,19 +71,19 @@ public class BankDAO {
 		return inserted != 0;
 	}
 	
-	// adds the email and password to the member account table
-		public boolean deleteMemberAccountDB() throws Exception {
-			int inserted = 0;
+	// attempts to delete member account
+	// created in case second half of customer registration fails
+	public boolean deleteMemberAccountDB() throws Exception {
+			int deleted = 0;
 			logger.debug("Received data to save");
 			Connection con = DBConnection.getInstance().getConnection();
-			String sql = "DELETE ";
+			String sql = "DELETE FROM member_account WHERE email = ?";
 			logger.debug(sql);
 			PreparedStatement pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, Menus.pojo.getEmail());
-			pstmt.setString(2, Menus.pojo.getPassword());
-			inserted = pstmt.executeUpdate();
-			logger.debug("Inserted member account: " + inserted);
-			return inserted != 0;
+			deleted = pstmt.executeUpdate();
+			logger.debug("deleted member account: " + deleted);
+			return deleted != 0;
 		}
 		
 	//======================================================================================

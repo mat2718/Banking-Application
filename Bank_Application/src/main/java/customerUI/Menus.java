@@ -122,6 +122,7 @@ public class Menus {
 		// collect password
 		System.out.println("Please enter password:\r\n");
 		String pswd = input.next();
+		
 		pojo.setPassword(pswd);
 		
 		// collect first name
@@ -137,7 +138,7 @@ public class Menus {
 		try {
 			// add member account and customer details
 			manager.accountRegistration();
-			manager.addCustomerDetails();
+			//manager.addCustomerDetails();
 			System.out.println("Congrats! Your all registered.");
 		} catch (Exception e) {
 			System.out.println("An unexpected error has occured.");
@@ -174,7 +175,7 @@ public class Menus {
 	}
 	
 	//======================================================================================
-	// Main menu
+	// Customer Main menu
 	//======================================================================================
 	
 	//main menu after login success	
@@ -443,6 +444,8 @@ public class Menus {
 			transactionHistory();
 		}
 	}
+	
+	
 	
 	
 

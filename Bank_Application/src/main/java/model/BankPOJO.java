@@ -18,6 +18,7 @@ public class BankPOJO {
 	private String description;
 	private float deposit;
 	private float withdraw;
+	
 	public String getEmail() {
 		return email;
 	}
@@ -108,10 +109,5 @@ public class BankPOJO {
 	public void setDeleteMemberId(String deleteMemberId) {
 		this.deleteMemberId = deleteMemberId;
 	}
-	
-			
-	
-	
-
 
 }
