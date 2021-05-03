@@ -118,7 +118,7 @@ public class Menus {
 		System.out.println("Please enter your email:\r\n");
 		String username = input.next();
 		pojo.setEmail(username);
-		
+		pojo.setDeleteMemberId(username);
 		// collect password
 		System.out.println("Please enter password:\r\n");
 		String pswd = input.next();
@@ -127,12 +127,12 @@ public class Menus {
 		// collect first name
 		System.out.println("Please enter your first name:\r\n");
 		String firstname = input.next();
-		pojo.setFirst_name(firstname);
+		pojo.setFirstName(firstname);
 		
 		//collect last name
 		System.out.println("Please enter your last name:\r\n");
 		String lastname = input.next();
-		pojo.setLast_name(lastname);
+		pojo.setLastName(lastname);
 		
 		try {
 			// add member account and customer details
@@ -285,8 +285,8 @@ public class Menus {
 		dao.printBankAccountsDB();
 		System.out.println("Please enter the account number you wish to deposit to.");
 		int selection = input.nextInt();
-		pojo.setBank_id(selection);
-		pojo.setRecieving_bank_id(selection);
+		pojo.setBankId(selection);
+		pojo.setRecievingBankId(selection);
 		pojo.setDescription("Deposit");
 		System.out.println("Please enter the amount you want to deposit.");
 		float deposit = input.nextFloat();
@@ -309,8 +309,8 @@ public class Menus {
 		dao.printBankAccountsDB();
 		System.out.println("Please enter the account number you wish to withdraw from.");
 		int selection = input.nextInt();
-		pojo.setBank_id(selection);
-		pojo.setRecieving_bank_id(selection);
+		pojo.setBankId(selection);
+		pojo.setRecievingBankId(selection);
 		pojo.setDescription("Withdraw");
 		System.out.println("Please enter the amount you want to withdraw.");
 		float withdraw = input.nextFloat();
@@ -361,12 +361,12 @@ public class Menus {
 			switch(acc) {
 			case 1:
 				// set POJO to checking
-				pojo.setAccount_type("Checking");
+				pojo.setAccountType("Checking");
 				newAccountDeposit();
 				break;
 			case 2:
 				// set POJO to savings
-				pojo.setAccount_type("Savings");
+				pojo.setAccountType("Savings");
 				newAccountDeposit();
 				break;
 			default:
@@ -433,7 +433,7 @@ public class Menus {
 		dao.printBankAccountsDB();
 		System.out.println("Please enter the account number you wish to view the transaction history for.");
 		int selection = input.nextInt();
-		pojo.setBank_id(selection);
+		pojo.setBankId(selection);
 		
 		// check for account permission
 		if(manager.currentBankAccount()) {

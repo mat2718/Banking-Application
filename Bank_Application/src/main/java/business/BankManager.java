@@ -21,9 +21,28 @@ public class BankManager {
 	//======================================================================================
 	// Registering an account
 	//======================================================================================
-		
+	
+	// 
+	public boolean accountRegistration() {
+		try {
+			if(addMemberAccount()) {
+				logger.info("Member account added.");
+				if(addCustomerDetails()) {
+					logger.info("Customer info added.");
+				}else {
+					
+				}
+			}else {
+				
+			}
+		}catch(Exception e) {
+			
+		}
+		return true;
+	}
+	
 	// validate insert into account table
-	public boolean accountRegistration() throws Exception {
+	public boolean addMemberAccount() throws Exception {
 		logger.debug("Received account creation request: ");
 		// delegating call to DAO
 		return dao.addMemberAccountDB();
@@ -56,7 +75,7 @@ public class BankManager {
 		logger.debug("Received customer details update request: ");
 		// delegating call to DAO
 		dao.currentBankAccountbalanceDB();
-		Menus.pojo.setNew_balance(Menus.pojo.getDeposit() + Menus.pojo.getBalance());
+		Menus.pojo.setNewBalance(Menus.pojo.getDeposit() + Menus.pojo.getBalance());
 		return dao.updateBankAccountDB();
 	}	
 	
@@ -65,8 +84,8 @@ public class BankManager {
 		logger.debug("Received customer details update request: ");
 		// delegating call to DAO
 		dao.currentBankAccountbalanceDB();
-		Menus.pojo.setNew_balance(Menus.pojo.getBalance() - Menus.pojo.getWithdraw());
-		if(Menus.pojo.getNew_balance() < 0) {
+		Menus.pojo.setNewBalance(Menus.pojo.getBalance() - Menus.pojo.getWithdraw());
+		if(Menus.pojo.getNewBalance() < 0) {
 			return false;
 		}else {
 			return dao.updateBankAccountDB();

@@ -4,42 +4,49 @@ public class BankPOJO {
 	
 	final int status = 1;
 	private String email;
+	private String deleteMemberId;
 	private String password;
-	private String first_name;
-	private String last_name;
-	private String account_type;
+	private String firstName;
+	private String lastName;
+	private String accountType;
 	private Float balance;
-	private Float new_balance;
-	private int bank_id;
-	private int sending_bank_id;
-	private int recieving_bank_id;	
+	private Float newBalance;
+	private int bankId;
+	private int deleteBankId;
+	private int sendingBankId; // might remove
+	private int recievingBankId;	// might remove
 	private String description;
 	private float deposit;
 	private float withdraw;
-			
 	public String getEmail() {
 		return email;
 	}
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getFirst_name() {
-		return first_name;
+	public String getPassword() {
+		return password;
 	}
-	public void setFirst_name(String first_name) {
-		this.first_name = first_name;
+	public void setPassword(String password) {
+		this.password = password;
 	}
-	public String getLast_name() {
-		return last_name;
+	public String getFirstName() {
+		return firstName;
 	}
-	public void setLast_name(String last_name) {
-		this.last_name = last_name;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
-	public String getAccount_type() {
-		return account_type;
+	public String getLastName() {
+		return lastName;
 	}
-	public void setAccount_type(String account_type) {
-		this.account_type = account_type;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	public String getAccountType() {
+		return accountType;
+	}
+	public void setAccountType(String accountType) {
+		this.accountType = accountType;
 	}
 	public Float getBalance() {
 		return balance;
@@ -47,35 +54,41 @@ public class BankPOJO {
 	public void setBalance(Float balance) {
 		this.balance = balance;
 	}
-	public int getBank_id() {
-		return bank_id;
+	public Float getNewBalance() {
+		return newBalance;
 	}
-	public void setBank_id(int bank_id) {
-		this.bank_id = bank_id;
+	public void setNewBalance(Float newBalance) {
+		this.newBalance = newBalance;
 	}
-	public int getSending_bank_id() {
-		return sending_bank_id;
+	public int getBankId() {
+		return bankId;
 	}
-	public void setSending_bank_id(int sending_bank_id) {
-		this.sending_bank_id = sending_bank_id;
+	public void setBankId(int bankId) {
+		this.bankId = bankId;
 	}
-	public int getRecieving_bank_id() {
-		return recieving_bank_id;
+	public int getDeleteBankId() {
+		return deleteBankId;
 	}
-	public void setRecieving_bank_id(int recieving_bank_id) {
-		this.recieving_bank_id = recieving_bank_id;
+	public void setDeleteBankId(int deleteBankId) {
+		this.deleteBankId = deleteBankId;
+	}
+	public int getSendingBankId() {
+		return sendingBankId;
+	}
+	public void setSendingBankId(int sendingBankId) {
+		this.sendingBankId = sendingBankId;
+	}
+	public int getRecievingBankId() {
+		return recievingBankId;
+	}
+	public void setRecievingBankId(int recievingBankId) {
+		this.recievingBankId = recievingBankId;
 	}
 	public String getDescription() {
 		return description;
 	}
 	public void setDescription(String description) {
 		this.description = description;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
 	}
 	public float getDeposit() {
 		return deposit;
@@ -89,12 +102,14 @@ public class BankPOJO {
 	public void setWithdraw(float withdraw) {
 		this.withdraw = withdraw;
 	}
-	public Float getNew_balance() {
-		return new_balance;
+	public String getDeleteMemberId() {
+		return deleteMemberId;
 	}
-	public void setNew_balance(Float new_balance) {
-		this.new_balance = new_balance;
+	public void setDeleteMemberId(String deleteMemberId) {
+		this.deleteMemberId = deleteMemberId;
 	}
+	
+			
 	
 	
 
