@@ -252,7 +252,8 @@ public class Menus {
 	public static void callBackMenu() {
 		logger.info("callBackMenu Screen Displayed");
 		try {
-			System.out.println("1. Return to Main Manu.\r\n"
+			System.out.println("\r\n"
+							+ "1. Return to Main Manu.\r\n"
 							+ "2. Exit\r\n"
 							+ "\r\n"
 							+ "Please select an option from the menu above (ex. 1)");
@@ -320,6 +321,7 @@ public class Menus {
 		if(withdraw > 0) {
 			pojo.setWithdraw(withdraw);
 			if(manager.withdraw()) {
+				manager.recordwithdraw();
 				dao.printNewBalanceDB();
 			}else {
 				System.out.println("invalid entry.");
@@ -436,8 +438,22 @@ public class Menus {
 	}
 	
 	// sub menu of mainMenu for closing an account
-	public static void closeAccountMenu() {
+	public static void closeAccountMenu() throws Exception {
 		logger.info("Close Account Screen Displayed");
+		BankDAO dao = new BankDAO();
+		dao.printBankAccountsDB();
+		System.out.println("Please enter the account number you wish to close. ");
+		int selection = input.nextInt();
+		pojo.setBankId(selection);
+		// check for account permission
+		if(manager.currentBankAccount()) {
+			
+			
+			dao.printTransactionsDB();
+		}else {
+			System.out.println("Invalid input!");
+			transactionHistory();
+		}
 	}
 	
 	//======================================================================================

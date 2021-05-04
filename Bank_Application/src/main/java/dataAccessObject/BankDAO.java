@@ -260,7 +260,7 @@ public class BankDAO {
 		checked.next();
 		Float result = checked.getFloat(1);
 		logger.debug("Completed check for current balance");
-		return result > 0;
+		return result != null;
 	}
 	
 }
