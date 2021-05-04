@@ -280,6 +280,7 @@ public class Menus {
 	//======================================================================================
 	// Account balance menus (withdraw, deposit, transfer)
 	//======================================================================================
+	
 	// sub menu of mainMenu for depositing money
 	public static void depositMenu() throws Exception {
 		logger.info("Deposit Screen Displayed");
@@ -335,8 +336,34 @@ public class Menus {
 	public static void transferMoneyMenu() throws Exception {
 		logger.info("Transfer Screen Displayed");
 		withdrawMenu();
-		depositMenu();
+		transferDepositMenu();
 		
+		
+	}
+	
+	// this module is only to be used with the transfer menu
+	// this is a similar iteration of the deposit menu but instead of asking the user how much they want to deposit 
+	// it simply takes the withdraw value that is inputted during the withdraw menu phase
+	public static void transferDepositMenu() throws Exception {
+		logger.info("Deposit Screen Displayed");
+		BankDAO dao = new BankDAO();
+		dao.printBankAccountsDB();
+		System.out.println("Please enter the account number you wish to deposit to.");
+		int selection = input.nextInt();
+		pojo.setBankId(selection);
+		pojo.setRecievingBankId(selection);
+		pojo.setDescription("Deposit");
+		pojo.setDeposit(pojo.getWithdraw());
+		float deposit = input.nextFloat();
+		if(deposit > 0) {
+			pojo.setDeposit(deposit);
+			manager.deposit();
+			manager.recordDeposit();
+			dao.printNewBalanceDB();
+		}else {
+			System.out.println("Invalid entry.");
+			depositMenu();
+		}
 		
 	}
 	
@@ -346,7 +373,7 @@ public class Menus {
 	
 	// sub menu of mainMenu for creating a new account in postgres
 	// option to deposit money
-	public static void newAccountMenu() {
+	public static void newAccountMenu() throws Exception {
 		logger.info("New Account Screen Displayed");
 		System.out.println("Would you like to create a new account? (Y/N)\r\n");
 		String selection = input.next();
@@ -373,17 +400,12 @@ public class Menus {
 			default:
 				System.out.println("Invalid input!");
 			}
-			
-			try {
-				manager.createBankAccount();
-			}catch(Exception e) {
-				System.out.println("An unexpected error has occured.");
-				e.printStackTrace();
-			}
+			manager.createBankAccount();
 			System.out.println("Congrats!");
 			break;
 		case("N"):
-			//
+			//just returns them back to the main menu
+			mainMenu();
 			break;
 		default:
 			System.out.println("Invalid input. Please try again.");
@@ -404,10 +426,12 @@ public class Menus {
 			break;
 		case("N"):
 			// set POJO to savings
+			pojo.setDeposit(0);
 			System.out.println("No worries. You can always deposit money later.");
 			break;
 		default:
 			System.out.println("Invalid input!");
+			newAccountDeposit();
 		}
 	}
 	

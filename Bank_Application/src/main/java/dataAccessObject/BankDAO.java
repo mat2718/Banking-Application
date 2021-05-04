@@ -100,7 +100,6 @@ public class BankDAO {
 		pstmt.setString(1, Menus.pojo.getEmail());
 		ResultSet checked = pstmt.executeQuery();
 		checked.next();
-		logger.debug("Member password is: ", checked.getString(2)," Password input was: ", Menus.pojo.getPassword());
 		return checked.getString(2).equals(Menus.pojo.getPassword());
 	}
 	
@@ -164,11 +163,12 @@ public class BankDAO {
 		int inserted = 0;
 		logger.debug("Received data to save");
 		Connection con = DBConnection.getInstance().getConnection();
-		String sql = "INSERT INTO bank_account (account_type, balance, email) VALUES (?,?)";
+		String sql = "INSERT INTO bank_account (account_type, balance, member_id) VALUES (?,?,?)";
 		logger.debug(sql);
 		PreparedStatement pstmt = con.prepareStatement(sql);
-		pstmt.setString(1, Menus.pojo.getEmail());
-		pstmt.setString(2, Menus.pojo.getPassword());
+		pstmt.setString(1, Menus.pojo.getAccountType());
+		pstmt.setFloat(2, Menus.pojo.getDeposit());
+		pstmt.setString(3, Menus.pojo.getEmail());
 		inserted = pstmt.executeUpdate();
 		logger.debug("Inserted member account: " + inserted);
 		return inserted != 0;
