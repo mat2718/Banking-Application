@@ -27,7 +27,8 @@ public class Menus {
 	static Scanner input = new Scanner(System.in);
 	public static BankPOJO pojo = new BankPOJO();
 	static BankManager manager = new BankManager();
-	
+	static ManagementMenus mgmt = new ManagementMenus();
+	static CustomerMenus customer = new CustomerMenus();
 	public static void main(String[] args) {
 		logger.info("Application Started");
 		
@@ -167,7 +168,21 @@ public class Menus {
 		
 		try {
 			if(manager.loginValidation()) {
-				mainMenu();
+				switch(pojo.getMemberType()) {
+				case 1:
+					CustomerMenus.mainMenu();
+					break;
+				case 2:
+					mgmt.mainManagementMenu(); 
+					break;
+				case 3:
+					//admin menu goes here
+					break;
+				default:
+					// this occurs when member type is either wrong or not created
+					System.out.println("member type not defined. Please try Again.");
+					loginMenu();
+				}
 			}else {
 				// this will run when someone mistypes the password
 				System.out.println("Login failed. Please try Again.");
@@ -182,334 +197,6 @@ public class Menus {
 		}
 	}
 	
-	//======================================================================================
-	// Customer Main menu
-	//======================================================================================
-	
-	//main menu after login success	
-	public static void mainMenu() {
-		logger.info("Main Menu Screen Displayed");
-		try {
-			System.out.println("Logged in as: " + pojo.getEmail()
-							+ "\r\n"
-							+ "Main Menu\r\n"
-							+ "================================\r\n"
-							+ "1. View Account Balance(s)\r\n"
-							+ "2. View Transaction History (Open Accounts Only)\r\n"
-							+ "3. Deposit Money\r\n"
-							+ "4. Withdraw Money\r\n"
-							+ "5. Transfer Money Between Accounts\r\n"
-							+ "6. Create New Account\r\n"
-							+ "7. Close Account\r\n"
-							+ "8. Exit\r\n"
-							+ "\r\n"
-							+ "Please select an option from the menu above (ex. 1)");
-			int selection = input.nextInt();
-			switch(selection) {
-			case 1:
-				// view account balance
-				viewBalanceMenu();
-				callBackMenu();
-				break;
-			case 2:
-				// view transaction history
-				transactionHistory();
-				callBackMenu();
-				break;
-			case 3:
-				// deposit money
-				depositMenu();
-				callBackMenu();
-				break;
-			case 4:
-				// withdraw money
-				withdrawMenu();
-				callBackMenu();
-				break;
-			case 5:
-				// transfer money between accounts
-				transferMoneyMenu();
-				callBackMenu();
-				break;
-			case 6:
-				// create new account
-				newAccountMenu();
-				callBackMenu();
-				break;
-			case 7:
-				// close account
-				closeAccountMenu();
-				callBackMenu();
-				break;
-			case 8:
-				// exit the application
-				System.out.println("Exiting application");
-				System.exit(0);
-				break;
-			default:
-				System.out.println("Invalid option. Please try again.");
-				mainMenu();
-			}
-		} catch(Exception e) {
-			logger.debug(e);
-			System.out.println("Invalid option. Please try again.");
-			mainMenu();
-		}
-	}
-	
-	public static void callBackMenu() {
-		logger.info("callBackMenu Screen Displayed");
-		try {
-			System.out.println("\r\n"
-							+ "1. Return to Main Manu.\r\n"
-							+ "2. Exit\r\n"
-							+ "\r\n"
-							+ "Please select an option from the menu above (ex. 1)");
-			int selection = input.nextInt();
-			switch(selection) {
-			case 1:
-				// launch login menu
-				mainMenu();
-				break;
-			case 2:
-				// exit the application
-				System.out.println("Exiting application");
-				System.exit(0);
-				break;
-			default:
-				System.out.println("Invalid option. Please try again.");
-				callBackMenu();			
-			}
-		}catch(Exception e) {
-			System.out.println("An unexpected error has occured. Please restart this application.");
-			logger.error("unexpected error: ", e);
-		}
-	}
-	
-	//======================================================================================
-	// Account balance menus (withdraw, deposit, transfer)
-	//======================================================================================
-	
-	//--------------------------------------------------------------------------------------
-	// sub menu of mainMenu for depositing money
-	public static void depositMenu() throws Exception {
-		logger.info("Deposit Screen Displayed");
-		BankDAO dao = new BankDAO();
-		dao.printBankAccountsDB();
-		System.out.println("Please enter the account number you wish to deposit to.");
-		int selection = input.nextInt();
-		pojo.setBankId(selection);
-		pojo.setRecievingBankId(selection);
-		pojo.setDescription("Deposit");
-		System.out.println("Please enter the amount you want to deposit.");
-		float deposit = input.nextFloat();
-		if(deposit > 0) {
-			pojo.setDeposit(deposit);
-			manager.deposit();
-			manager.recordDeposit();
-			dao.printNewBalanceDB();
-		}else {
-			System.out.println("Invalid entry.");
-			depositMenu();
-		}
-		
-	}
-	
-	// sub menu of mainMenu for withdrawing money
-	public static void withdrawMenu() throws Exception {
-		logger.info("Withdraw Screen Displayed");
-		BankDAO dao = new BankDAO();
-		dao.printBankAccountsDB();
-		System.out.println("Please enter the account number you wish to withdraw from.");
-		int selection = input.nextInt();
-		pojo.setBankId(selection);
-		pojo.setRecievingBankId(selection);
-		pojo.setDescription("Withdraw");
-		System.out.println("Please enter the amount you want to withdraw.");
-		float withdraw = input.nextFloat();
-		if(withdraw > 0) {
-			pojo.setWithdraw(withdraw);
-			if(manager.withdraw()) {
-				manager.recordwithdraw();
-				dao.printNewBalanceDB();
-			}else {
-				System.out.println("invalid entry.");
-				withdrawMenu();
-			}
-		}else {
-			System.out.println("Invalid entry.");
-			withdrawMenu();
-		}
-		
-	}
-		
-	//--------------------------------------------------------------------------------------
-	// sub menu of mainMenu for transferring money between accounts
-	public static void transferMoneyMenu() throws Exception {
-		logger.info("Transfer Screen Displayed");
-		withdrawMenu();
-		transferDepositMenu();
-	}
-	
-	// this module is only to be used with the transfer menu
-	// this is a similar iteration of the deposit menu but instead of asking the user how much they want to deposit 
-	// it simply takes the withdraw value that is inputted during the withdraw menu phase
-	public static boolean transferDepositMenu() throws Exception {
-		logger.info("Deposit Screen Displayed");
-		BankDAO dao = new BankDAO();
-		dao.printBankAccountsDB();
-		System.out.println("Please enter the account number you wish to deposit to.");
-		int selection = input.nextInt();
-		pojo.setBankId(selection);
-		pojo.setRecievingBankId(selection);
-		pojo.setDescription("Deposit");
-		pojo.setDeposit(pojo.getWithdraw());
-		float deposit = pojo.getDeposit();
-		if(deposit > 0) {
-			pojo.setDeposit(deposit);
-			if(manager.deposit()) {
-				manager.recordDeposit();
-				dao.printNewBalanceDB();
-				return true;
-			}else {
-				return false;
-			}
-		}else {
-			System.out.println("Invalid entry.");
-			transferDepositMenu();
-			return false;
-		}
-	}
-	
-	//--------------------------------------------------------------------------------------
-	
-	//======================================================================================
-	// Account management (create, close)
-	//======================================================================================
-	
-	//--------------------------------------------------------------------------------------
-	// sub menu of mainMenu for creating a new account in postgres
-	// option to deposit money
-	public static void newAccountMenu() throws Exception {
-		logger.info("New Account Screen Displayed");
-		System.out.println("Would you like to create a new account? (Y/N)\r\n");
-		String selection = input.next();
-		switch(selection.toUpperCase()) {
-		case("Y"):
-			// create a new account
-			System.out.println("Account Types\r\n"
-					+ "\r\n"
-					+ "1. Checking\r\n"
-					+ "2. Savings\r\n"
-					+ "Select type of account:\r\n");
-			int acc = input.nextInt();
-			switch(acc) {
-			case 1:
-				// set POJO to checking
-				pojo.setAccountType("Checking");
-				newAccountDeposit();
-				break;
-			case 2:
-				// set POJO to savings
-				pojo.setAccountType("Savings");
-				newAccountDeposit();
-				break;
-			default:
-				System.out.println("Invalid input!");
-			}
-			manager.createBankAccount();
-			//manager.recordDeposit();
-			System.out.println("Congrats! Your new account has been added.");
-			break;
-		case("N"):
-			//just returns them back to the main menu
-			mainMenu();
-			break;
-		default:
-			System.out.println("Invalid input. Please try again.");
-			newAccountMenu();
-		}
-	}
-	
-	// deposit option upon the creation of a new account
-	public static void newAccountDeposit() {
-		logger.info("New Account deposit Screen Displayed");
-		System.out.println("Would you like to deposit money into your new account? (Y/N)\r\n");
-		String selection = input.next();
-		switch(selection.toUpperCase()) {
-		case("Y"):
-			System.out.println("Input amount to deposit.");
-			int dep = input.nextInt();
-			pojo.setDeposit(dep);
-			pojo.setDescription("");
-			break;
-		case("N"):
-			// set POJO to savings
-			pojo.setDeposit(0);
-			System.out.println("No worries. You can always deposit money later.");
-			break;
-		default:
-			System.out.println("Invalid input!");
-			newAccountDeposit();
-		}
-	}
-	
-	//--------------------------------------------------------------------------------------
-	// sub menu of mainMenu for closing an account
-	public static void closeAccountMenu() throws Exception {
-		logger.info("Close Account Screen Displayed");
-		BankDAO dao = new BankDAO();
-		dao.printBankAccountsDB();
-		System.out.println("Please enter the account number you wish to close. ");
-		int selection = input.nextInt();
-		pojo.setDeleteBankId(selection);
-		// this is only used for the validation stage and is over written during the deposit selection stage
-		pojo.setBankId(selection); 
-		// check for account permission
-		if(manager.currentBankAccount()) {
-			dao.currentBankAccountbalanceDB();
-			if(pojo.getBalance() > 0) {
-				pojo.setWithdraw(pojo.getBalance());
-				if(transferDepositMenu()) {
-					manager.closeBankAccount();
-				}
-			}else {
-				manager.closeBankAccount();
-			}			
-		}else {
-			System.out.println("Invalid input!");
-			transactionHistory();
-		}
-	}
-	
-	//======================================================================================
-	// Customer reports (balances, transactions)
-	//======================================================================================
-	
-	// sub menu of mainMenu that shows all available account balances
-	public static void viewBalanceMenu() throws Exception {
-		logger.info("viewBalanceMenu Screen Displayed");
-		BankDAO dao = new BankDAO();
-		dao.printBankAccountsDB();
-	}
-	
-	// sub menu of mainMenu that shows transaction menu
-	public static void transactionHistory() throws Exception {
-		logger.info("Transaction Screen Displayed");
-		BankDAO dao = new BankDAO();
-		dao.printBankAccountsDB();
-		System.out.println("Please enter the account number you wish to view the transaction history for.");
-		int selection = input.nextInt();
-		pojo.setBankId(selection);
-		
-		// check for account permission
-		if(manager.currentBankAccount()) {
-			dao.printTransactionsDB();
-		}else {
-			System.out.println("Invalid input!");
-			transactionHistory();
-		}
-	}
 	
 	
 	

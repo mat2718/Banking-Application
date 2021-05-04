@@ -94,13 +94,15 @@ public class BankDAO {
 	public boolean loginValidationDB() throws Exception {
 		logger.debug("comparing login credentials with database");
 		Connection con = DBConnection.getInstance().getConnection();
-		String sql = "SELECT email,password FROM member_account WHERE email = ?";
+		String sql = "SELECT email,password, status, member_type FROM member_account WHERE email = ?";
 		logger.debug(sql);
 		PreparedStatement pstmt = con.prepareStatement(sql);
 		pstmt.setString(1, Menus.pojo.getEmail());
 		ResultSet checked = pstmt.executeQuery();
-		checked.next();
-		return checked.getString(2).equals(Menus.pojo.getPassword());
+		checked.next(); 
+			int status = checked.getInt(3);
+			Menus.pojo.setMemberType(checked.getInt(3));
+		return checked.getString(2).equals(Menus.pojo.getPassword()) && status == 1;
 	}
 	
 	// validate access to account
@@ -186,6 +188,37 @@ public class BankDAO {
 		return inserted != 0;
 	}
 	
+	// post external transfer
+	public boolean recordExternalTransactionDB() throws Exception {
+		int inserted = 0;
+		logger.debug("Received data to save");
+		Connection con = DBConnection.getInstance().getConnection();
+		String sql = "INSERT INTO money_transfers (description, amount, status, bank_account_id, member_id) VALUES (?,?,?,?)";
+		logger.debug(sql);
+		PreparedStatement pstmt = con.prepareStatement(sql);
+		pstmt.setString(1, Menus.pojo.getDescription());
+		pstmt.setFloat(2, Menus.pojo.getWithdraw());
+		pstmt.setInt(3, Menus.pojo.getBankId());
+		inserted = pstmt.executeUpdate();
+		logger.debug("Inserted member account: " + inserted);
+		return inserted != 0;
+	}
+	
+	// post external transfer
+	public boolean updateExternalTransactionDB() throws Exception {
+		int inserted = 0;
+		logger.debug("Received data to save");
+		Connection con = DBConnection.getInstance().getConnection();
+		String sql = "INSERT INTO money_transfers (description, amount, status, bank_account_id) VALUES (?,?,?,?)";
+		logger.debug(sql);
+		PreparedStatement pstmt = con.prepareStatement(sql);
+		pstmt.setString(1, Menus.pojo.getDescription());
+		pstmt.setFloat(2, Menus.pojo.getWithdraw());
+		pstmt.setInt(3, Menus.pojo.getBankId());
+		inserted = pstmt.executeUpdate();
+		logger.debug("Inserted member account: " + inserted);
+		return inserted != 0;
+	}
 	
 	
 	//======================================================================================

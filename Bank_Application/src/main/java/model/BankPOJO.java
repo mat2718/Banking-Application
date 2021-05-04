@@ -11,12 +11,18 @@ public class BankPOJO {
 	private String accountType;
 	private Float balance;
 	private Float newBalance;
+	private int memberType;
 	private int bankId;
 	private int deleteBankId;
 	private int sendingBankId; 
-	private int recievingBankId;	
+	private int recievingBankId;
+	private String recievingEmail;
 	private String description;
 	private String descriptionNotes;
+	
+	
+	private float sendingAmount;
+	private float recievingAmount;
 	private float deposit;
 	private float withdraw;
 	
@@ -116,5 +122,30 @@ public class BankPOJO {
 	public void setDescriptionNotes(String descriptionNotes) {
 		this.descriptionNotes = descriptionNotes;
 	}
+	public int getMemberType() {
+		return memberType;
+	}
+	public void setMemberType(int memberType) {
+		this.memberType = memberType;
+	}
+	public float getSendingAmount() {
+		return sendingAmount;
+	}
+	public void setSendingAmount(float sendingAmount) {
+		this.sendingAmount = sendingAmount;
+	}
+	public float getRecievingAmount() {
+		return recievingAmount;
+	}
+	public void setRecievingAmount(float recievingAmount) {
+		this.recievingAmount = recievingAmount;
+	}
+	public String getRecievingEmail() {
+		return recievingEmail;
+	}
+	public void setRecievingEmail(String recievingEmail) {
+		this.recievingEmail = recievingEmail;
+	}
+	
 	
 }
