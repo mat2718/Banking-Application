@@ -23,6 +23,7 @@ public class BankManager {
 	//======================================================================================
 	
 	// call upon account registration in DB
+	// TESTED
 	public boolean accountRegistration() throws Exception {
 		logger.debug("Received account creation request: ");
 		
@@ -48,6 +49,7 @@ public class BankManager {
 	//======================================================================================
 	
 	// validate insert into customer table
+	// TESTED
 	public boolean loginValidation() throws Exception {
 		logger.debug("Received customer details update request: ");
 		// delegating call to DAO
@@ -62,9 +64,14 @@ public class BankManager {
 	public boolean deposit() throws Exception {
 		logger.debug("Received customer details update request: ");
 		// delegating call to DAO
-		dao.currentBankAccountbalanceDB();
-		Menus.pojo.setNewBalance(Menus.pojo.getDeposit() + Menus.pojo.getBalance());
-		return dao.updateBankAccountDB();
+		if(Menus.pojo.getBankId() != Menus.pojo.getDeleteBankId()) {
+			dao.currentBankAccountbalanceDB();
+			Menus.pojo.setNewBalance(Menus.pojo.getDeposit() + Menus.pojo.getBalance());
+			return dao.updateBankAccountDB();
+		}else {
+			System.out.println("ERROR: Cannot transfer to closing account");
+			return false;
+		}
 	}	
 	
 	// validate update of withdraw
@@ -90,6 +97,16 @@ public class BankManager {
 		logger.debug("Received bank account creation request");
 		// delegating call to DAO
 		return dao.createBankAccountDB();
+	}
+	
+	// validate closure of account
+	// NOTE: this only sets a status to 2
+	// this is designed this way in case of a partial transaction failure or a accidental closure. 
+	// however only a manager would be able to reinstate the account
+	public boolean closeBankAccount() throws Exception {
+		logger.debug("Received bank account closure request");
+		// delegating call to DAO
+		return dao.closeBankAccountDB();
 	}
 		
 	//======================================================================================

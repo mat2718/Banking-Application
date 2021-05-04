@@ -13,9 +13,10 @@ public class BankPOJO {
 	private Float newBalance;
 	private int bankId;
 	private int deleteBankId;
-	private int sendingBankId; // might remove
-	private int recievingBankId;	// might remove
+	private int sendingBankId; 
+	private int recievingBankId;	
 	private String description;
+	private String descriptionNotes;
 	private float deposit;
 	private float withdraw;
 	
@@ -109,5 +110,11 @@ public class BankPOJO {
 	public void setDeleteMemberId(String deleteMemberId) {
 		this.deleteMemberId = deleteMemberId;
 	}
-
+	public String getDescriptionNotes() {
+		return descriptionNotes;
+	}
+	public void setDescriptionNotes(String descriptionNotes) {
+		this.descriptionNotes = descriptionNotes;
+	}
+	
 }
