@@ -9,7 +9,6 @@ import business.BankManager;
 import model.BankPOJO;
 import util.ConfigReader;
 import util.DBConnection;
-import dataAccessObject.*;
 
 /**
  * Presentation Layer
@@ -173,7 +172,7 @@ public class Menus {
 					CustomerMenus.mainMenu();
 					break;
 				case 2:
-					mgmt.mainManagementMenu(); 
+					ManagementMenus.mainManagementMenu(); 
 					break;
 				case 3:
 					//admin menu goes here
