@@ -35,7 +35,7 @@ public class BankManager {
 	
 	// validate insert into customer table
 	public boolean loginValidation() throws Exception {
-		logger.debug("Received customer details update request: ");
+		logger.debug("Received login credentials sending to DB to validate request.");
 		// delegating call to DAO
 		return dao.loginValidationDB();
 	}
@@ -58,6 +58,30 @@ public class BankManager {
 		}
 	}	
 	
+	
+	//
+	public boolean externalTransfer() throws Exception{
+		if(checkExternalTransfer()) {
+			if(dao.recordExternalTransferDB()) {
+				withdraw();
+				dao.recordWithdrawDB();
+				return true;
+			}else {
+				return false;
+			}
+		}else {
+			return false;
+		}
+	}
+	
+	// validate receiving account and member id match
+	public boolean checkExternalTransfer() throws Exception{
+		logger.debug("Sending request to check external account");
+		
+		return dao.checkExternalTransferDB();
+	}
+	
+	
 	// validate update of withdraw
 	public boolean withdraw() throws Exception {
 		logger.debug("Received customer details update request: ");
@@ -72,6 +96,7 @@ public class BankManager {
 			return dao.updateBankAccountDB();
 		}
 	}
+	
 	//======================================================================================
 	// Account management (create, close)
 	//======================================================================================

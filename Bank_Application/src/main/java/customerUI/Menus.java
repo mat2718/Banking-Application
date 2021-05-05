@@ -195,10 +195,6 @@ public class Menus {
 			menuSplashScreen();
 		}
 	}
-	
-	
-	
-	
-	
-
 }
+
+

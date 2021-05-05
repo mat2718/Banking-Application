@@ -19,18 +19,14 @@ public class CustomerMenus {
 		try {
 			System.out.println("Logged in as: " + Menus.pojo.getEmail()
 							+ "\r\n"
+							+ "\r\n"
 							+ "Main Menu\r\n"
 							+ "================================\r\n"
 							+ "1. View Account Balance(s)\r\n"
 							+ "2. View Transaction History (Open Accounts Only)\r\n"
-							+ "3. Deposit Money\r\n"
-							+ "4. Withdraw Money\r\n"
-							+ "5. Transfer Money Between Accounts\r\n"
-							+ "6. Transfer Money to outside Account\r\n"
-							+ "7. Accept/Deny Reciept of Money\r\n"
-							+ "8. Create New Account\r\n"
-							+ "9. Close Account\r\n"
-							+ "10. Exit\r\n"
+							+ "3. Account Management (Open/ Close Accounts)\r\n"
+							+ "4. Account Actions (Withdraw/ Deposit/ Transfer)\r\n"
+							+ "5. Exit\r\n"
 							+ "\r\n"
 							+ "Please select an option from the menu above (ex. 1)");
 			int selection = Menus.input.nextInt();
@@ -46,41 +42,16 @@ public class CustomerMenus {
 				callBackMenu();
 				break;
 			case 3:
-				// deposit money
-				depositMenu();
+				// managing your accounts menu
+				accountManagementMenu();
 				callBackMenu();
 				break;
 			case 4:
 				// withdraw money
-				withdrawMenu();
+				accountActionsMenu();
 				callBackMenu();
 				break;
 			case 5:
-				// transfer money between accounts
-				transferMoneyMenu();
-				callBackMenu();
-				break;
-			case 6:
-				// transfer to outside account
-				
-				callBackMenu();
-				break;
-			case 7:
-				// approve/ deny receipt of money
-				
-				callBackMenu();
-				break;
-			case 8:
-				// create new account
-				newAccountMenu();
-				callBackMenu();
-				break;
-			case 9:
-				// close account
-				closeAccountMenu();
-				callBackMenu();
-				break;
-			case 10:
 				// exit the application
 				System.out.println("Exiting application");
 				System.exit(0);
@@ -96,6 +67,118 @@ public class CustomerMenus {
 		}
 	}
 	
+	//sub menu after login success	
+	public static void accountManagementMenu() {
+		logger.info("accountManagementMenu Screen Displayed");
+		try {
+			System.out.println("Logged in as: " + Menus.pojo.getEmail()
+							+ "\r\n"
+							+ "\r\n"
+							+ "Account Management Menu\r\n"
+							+ "================================\r\n"
+							+ "1. Create New Account\r\n"
+							+ "2. Close Account\r\n"
+							+ "3. Main Menu\r\n"
+							+ "4. Exit\r\n"
+							+ "\r\n"
+							+ "Please select an option from the menu above (ex. 1)");
+			int selection = Menus.input.nextInt();
+			switch(selection) {
+			case 1:
+				// create new account
+				newAccountMenu();
+				callBackMenu();
+				break;
+			case 2:
+				// close account
+				closeAccountMenu();
+				callBackMenu();
+				break;
+			case 3:
+				// exit the application
+				mainMenu();
+				break;
+			case 4:
+				// exit the application
+				System.out.println("Exiting application");
+				System.exit(0);
+				break;
+			default:
+				System.out.println("Invalid option. Please try again.");
+				accountManagementMenu();
+			}
+		} catch(Exception e) {
+			logger.debug(e);
+			System.out.println("Invalid option. Please try again.");
+			accountManagementMenu();
+		}
+	}
+	
+	//sub menu after login success	
+	public static void accountActionsMenu() {
+		logger.info("Main Menu Screen Displayed");
+		try {
+			System.out.println("Logged in as: " + Menus.pojo.getEmail()
+							+ "\r\n"
+							+ "\r\n"
+							+ "Account Actions Menu\r\n"
+							+ "================================\r\n"
+							+ "1. Deposit Money\r\n"
+							+ "2. Withdraw Money\r\n"
+							+ "3. Transfer Money Between Accounts\r\n"
+							+ "4. Transfer Money to outside Account\r\n"
+							+ "5. Accept/Deny Reciept of Money\r\n"
+							+ "6. Main Menu\r\n"
+							+ "7. Exit\r\n"
+							+ "\r\n"
+							+ "Please select an option from the menu above (ex. 1)");
+			int selection = Menus.input.nextInt();
+			switch(selection) {
+			case 1:
+				// deposit money
+				depositMenu();
+				callBackMenu();
+				break;
+			case 2:
+				// withdraw money
+				withdrawMenu();
+				callBackMenu();
+				break;
+			case 3:
+				// transfer money between accounts
+				transferMoneyMenu();
+				callBackMenu();
+				break;
+			case 4:
+				// transfer to outside account
+				externalTransfer();
+				callBackMenu();
+				break;
+			case 5:
+				// approve/ deny receipt of money
+				
+				callBackMenu();
+				break;
+			case 6:
+				// approve/ deny receipt of money
+				mainMenu();
+				break;
+			case 7:
+				// exit the application
+				System.out.println("Exiting application");
+				System.exit(0);
+				break;
+			default:
+				System.out.println("Invalid option. Please try again.");
+				mainMenu();
+			}
+		} catch(Exception e) {
+			logger.debug(e);
+			System.out.println("Invalid option. Please try again.");
+			mainMenu();
+		}
+	}
+
 	public static void callBackMenu() {
 		logger.info("callBackMenu Screen Displayed");
 		try {
@@ -219,29 +302,42 @@ public class CustomerMenus {
 		}
 	}
 	
+	//--------------------------------------------------------------------------------------
 	public static void externalTransfer() throws Exception {
 		BankDAO dao = new BankDAO();
 		dao.printBankAccountsDB();
-		System.out.println("Please enter the account number you wish to send to.");
+		System.out.println("Please enter the account number you wish to send FROM.");
 		int bankIDSelection = Menus.input.nextInt();
 		Menus.pojo.setBankId(bankIDSelection);
-		Menus.pojo.setRecievingBankId(bankIDSelection);
+		System.out.println("Please enter the account number you wish to send TO.");
+		int recievingBankId = Menus.input.nextInt();
+		Menus.pojo.setRecievingBankId(recievingBankId);
 		System.out.println("Please enter the email of the account holder you wish to send to.");
-		String emailSelection = Menus.input.next();
-		Menus.pojo.setRecievingEmail(emailSelection);
-		Menus.pojo.setDescription("Deposit");
+		String recievingEmail = Menus.input.next();
+		Menus.pojo.setRecievingEmail(recievingEmail);
+		Menus.pojo.setDescription("Transfer to:" + recievingEmail + " (" + recievingBankId + ") From:" + bankIDSelection);
 		System.out.println("Please enter the amount you want to send.");
-		float deposit = Menus.input.nextFloat();
-		if(deposit > 0) {
-			Menus.pojo.setDeposit(deposit);
-			Menus.manager.deposit();
-			Menus.manager.recordDeposit();
+		float withdraw = Menus.input.nextFloat();
+		if(withdraw > 0) {
+			Menus.pojo.setWithdraw(withdraw);
+			if(Menus.manager.externalTransfer()) {
+				System.out.println("Success! Your request has been posted.\r\n");
+			}else {
+				System.out.println("Uh-Oh! it looks like something isnt right. Please try again.\r\n"
+						+ "NOTE: verify that the information entered is correct.");
+				externalTransfer();
+			}
 			dao.printNewBalanceDB();
 		}else {
 			System.out.println("Invalid entry.");
-			depositMenu();
+			externalTransfer();
 		}
 	}
+	
+	public static void approveDenyTransfers() {
+		
+	}
+	
 	//--------------------------------------------------------------------------------------
 	
 	//======================================================================================
