@@ -32,37 +32,37 @@ public class ManagementMenus {
 			switch(selection) {
 			case 1:
 				// view account balance
-				viewBalanceMenu();
+				
 				callBackMenu();
 				break;
 			case 2:
 				// view transaction history
-				transactionHistory();
+				
 				callBackMenu();
 				break;
 			case 3:
 				// deposit money
-				depositMenu();
+				
 				callBackMenu();
 				break;
 			case 4:
 				// withdraw money
-				withdrawMenu();
+				
 				callBackMenu();
 				break;
 			case 5:
 				// transfer money between accounts
-				transferMoneyMenu();
+				
 				callBackMenu();
 				break;
 			case 6:
 				// create new account
-				newAccountMenu();
+				
 				callBackMenu();
 				break;
 			case 7:
 				// close account
-				closeAccountMenu();
+				
 				callBackMenu();
 				break;
 			case 8:
@@ -72,12 +72,12 @@ public class ManagementMenus {
 				break;
 			default:
 				System.out.println("Invalid option. Please try again.");
-				mainMenu();
+				mainManagementMenu();
 			}
 		} catch(Exception e) {
 			logger.debug(e);
 			System.out.println("Invalid option. Please try again.");
-			mainMenu();
+			mainManagementMenu();
 		}
 	}
 	
@@ -93,7 +93,7 @@ public class ManagementMenus {
 			switch(selection) {
 			case 1:
 				// launch login menu
-				mainMenu();
+				mainManagementMenu();
 				break;
 			case 2:
 				// exit the application
