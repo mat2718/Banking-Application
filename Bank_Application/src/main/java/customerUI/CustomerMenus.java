@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 public class CustomerMenus {
 	
 	private static final Logger logger = LogManager.getLogger(CustomerMenus.class);
+	static BankDAO dao = new BankDAO();
 	//======================================================================================
 	// Customer Main menu
 	//======================================================================================
@@ -216,7 +217,6 @@ public class CustomerMenus {
 	// sub menu of mainMenu for depositing money
 	public static void depositMenu() throws Exception {
 		logger.info("Deposit Screen Displayed");
-		BankDAO dao = new BankDAO();
 		dao.printBankAccountsDB();
 		System.out.println("Please enter the account number you wish to deposit to.");
 		int selection = Menus.input.nextInt();
@@ -239,7 +239,6 @@ public class CustomerMenus {
 	// sub menu of mainMenu for withdrawing money
 	public static void withdrawMenu() throws Exception {
 		logger.info("Withdraw Screen Displayed");
-		BankDAO dao = new BankDAO();
 		dao.printBankAccountsDB();
 		System.out.println("Please enter the account number you wish to withdraw from.");
 		int selection = Menus.input.nextInt();
@@ -266,10 +265,31 @@ public class CustomerMenus {
 		
 	//--------------------------------------------------------------------------------------
 	// sub menu of mainMenu for transferring money between accounts
-	public static void transferMoneyMenu() throws Exception {
+	public static void transferMoneyMenu(){
 		logger.info("Transfer Screen Displayed");
+		try {
 		withdrawMenu();
-		transferDepositMenu();
+		
+			if(transferDepositMenu()) {
+				logger.info("transfer completed");
+			}else {
+				Menus.manager.correctTransfer();
+				System.out.println("Transfer failed money returned to your account. first");
+			}
+		}catch(Exception e) {
+			try {
+				Menus.manager.correctTransfer();
+			} catch (Exception e1) {
+				logger.debug(e1);
+			}
+			System.out.println("Transfer failed money returned to your account. second");
+			try {
+				dao.printBankAccountsDB();
+			} catch (Exception e1) {
+				logger.debug(e1);
+			}
+			logger.debug(e);
+		}
 	}
 	
 	// this module is only to be used with the transfer menu
@@ -277,12 +297,12 @@ public class CustomerMenus {
 	// it simply takes the withdraw value that is inputted during the withdraw menu phase
 	public static boolean transferDepositMenu() throws Exception {
 		logger.info("Deposit Screen Displayed");
-		BankDAO dao = new BankDAO();
 		dao.printBankAccountsDB();
 		System.out.println("Please enter the account number you wish to deposit to.");
 		int selection = Menus.input.nextInt();
 		Menus.pojo.setBankId(selection);
 		Menus.pojo.setRecievingBankId(selection);
+		Menus.pojo.setSendingBankId(selection);
 		Menus.pojo.setDescription("Deposit");
 		Menus.pojo.setDeposit(Menus.pojo.getWithdraw());
 		float deposit = Menus.pojo.getDeposit();
@@ -304,7 +324,6 @@ public class CustomerMenus {
 	
 	//--------------------------------------------------------------------------------------
 	public static void externalTransfer() throws Exception {
-		BankDAO dao = new BankDAO();
 		dao.printBankAccountsDB();
 		System.out.println("Please enter the account number you wish to send FROM.");
 		int bankIDSelection = Menus.input.nextInt();
@@ -415,7 +434,6 @@ public class CustomerMenus {
 	// sub menu of mainMenu for closing an account
 	public static void closeAccountMenu() throws Exception {
 		logger.info("Close Account Screen Displayed");
-		BankDAO dao = new BankDAO();
 		dao.printBankAccountsDB();
 		System.out.println("Please enter the account number you wish to close. ");
 		int selection = Menus.input.nextInt();
@@ -446,14 +464,12 @@ public class CustomerMenus {
 	// sub menu of mainMenu that shows all available account balances
 	public static void viewBalanceMenu() throws Exception {
 		logger.info("viewBalanceMenu Screen Displayed");
-		BankDAO dao = new BankDAO();
 		dao.printBankAccountsDB();
 	}
 	
 	// sub menu of mainMenu that shows transaction menu
 	public static void transactionHistory() throws Exception {
 		logger.info("Transaction Screen Displayed");
-		BankDAO dao = new BankDAO();
 		dao.printBankAccountsDB();
 		System.out.println("Please enter the account number you wish to view the transaction history for.");
 		int selection = Menus.input.nextInt();

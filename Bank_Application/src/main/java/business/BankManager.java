@@ -49,9 +49,13 @@ public class BankManager {
 		logger.debug("Received customer details update request: ");
 		// delegating call to DAO
 		if(Menus.pojo.getBankId() != Menus.pojo.getDeleteBankId()) {
-			dao.currentBankAccountbalanceDB();
-			Menus.pojo.setNewBalance(Menus.pojo.getDeposit() + Menus.pojo.getBalance());
-			return dao.updateBankAccountDB();
+			if(dao.currentBankAccountDB()) {
+				dao.currentBankAccountbalanceDB();
+				Menus.pojo.setNewBalance(Menus.pojo.getDeposit() + Menus.pojo.getBalance());
+				return dao.updateBankAccountDB();
+			}else {
+				return false;
+			}
 		}else {
 			System.out.println("ERROR: Cannot transfer to closing account");
 			return false;
@@ -81,6 +85,13 @@ public class BankManager {
 		return dao.checkExternalTransferDB();
 	}
 	
+	
+	public boolean correctTransfer() throws Exception {
+		 Menus.pojo.setBankId(Menus.pojo.getRecievingBankId());
+		 dao.currentBankAccountbalanceDB();
+		 Menus.pojo.setNewBalance(Menus.pojo.getWithdraw() +  + Menus.pojo.getBalance());
+		 return dao.updateBankAccountDB();
+	 }
 	
 	// validate update of withdraw
 	public boolean withdraw() throws Exception {
