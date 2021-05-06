@@ -45,7 +45,7 @@ public class BankDAO {
 
 	public boolean addMemberAccountDB() throws Exception {
 		int inserted = 0;
-		logger.debug("Received data to save");
+		logger.debug("Adding member account");
 		Connection con = DBConnection.getInstance().getConnection();
 		String sql = "INSERT INTO member_account (email, password) VALUES (?,?)";
 		logger.debug(sql);
