@@ -1,7 +1,7 @@
 /**
  * 
  */
-package dataAccessObject;
+package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,7 +9,8 @@ import java.sql.ResultSet;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import customerUI.Menus;
+
+import client.Menus;
 import util.DBConnection;
 
 /** persistence layer

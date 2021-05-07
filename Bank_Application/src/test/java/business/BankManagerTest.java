@@ -15,9 +15,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import customerUI.Menus;
+import client.Menus;
+import dao.BankDAO;
 import model.BankPOJO;
-import dataAccessObject.BankDAO;
 
 /**
  * @author MATTH

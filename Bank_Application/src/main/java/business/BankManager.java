@@ -6,8 +6,8 @@ package business;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import customerUI.Menus;
-import dataAccessObject.BankDAO;
+import client.Menus;
+import dao.BankDAO;
 
 
 /**

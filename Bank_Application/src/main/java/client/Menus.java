@@ -1,4 +1,4 @@
-package customerUI;
+package client;
 
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -6,10 +6,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import business.BankManager;
+import dao.BankDAO;
 import model.BankPOJO;
 import util.ConfigReader;
 import util.DBConnection;
-import dataAccessObject.*;
+
 
 /**
  * Presentation Layer
@@ -506,9 +507,5 @@ public class Menus {
 			transactionHistory();
 		}
 	}
-	
-	
-	
-	
 
 }
