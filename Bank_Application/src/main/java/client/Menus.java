@@ -35,8 +35,7 @@ public class Menus {
 		checkConnections();
 		menuSplashScreen();
 		input.close();
-		logger.info("Application Stopped");
-		
+		logger.info("Application Stopped");	
 	}
 	
 	//======================================================================================

@@ -23,33 +23,17 @@ public class BankManager {
 	//======================================================================================
 	
 	// call upon account registration in DB
-	// TESTED
 	public boolean accountRegistration() throws Exception {
 		logger.debug("Received account creation request: ");
 		
 		return dao.accountRegistrationDB();
 	}
-	
-//	// validate insert into account table
-//	public boolean addMemberAccount() throws Exception {
-//		logger.debug("Received account creation request: ");
-//		// delegating call to DAO
-//		return dao.addMemberAccountDB();
-//	}
-//	
-//	// validate insert into customer table
-//	public boolean addCustomerDetails() throws Exception {
-//		logger.debug("Received customer details update request: ");
-//		// delegating call to DAO
-//		return dao.addCustomerDetailsDB();
-//	}
-		
+			
 	//======================================================================================
 	// Validating Login credentials
 	//======================================================================================
 	
 	// validate insert into customer table
-	// TESTED
 	public boolean loginValidation() throws Exception {
 		logger.debug("Received customer details update request: ");
 		// delegating call to DAO

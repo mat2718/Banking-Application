@@ -91,7 +91,7 @@ public class BankDAO {
 	// Validating Login credentials
 	//======================================================================================
 	
-	
+	// validate login credential entered with those in the DB
 	public boolean loginValidationDB() throws Exception {
 		logger.debug("comparing login credentials with database");
 		Connection con = DBConnection.getInstance().getConnection();

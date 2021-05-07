@@ -6,7 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class DBConnection {
-	
+	// JDBC
 	private static final Logger logger = LogManager.getLogger(DBConnection.class);
 	
 	private static DBConnection instance;
@@ -18,6 +18,7 @@ public class DBConnection {
 				String user = ConfigReader.getInstance().getProperty("DB_USER");
 				String password = ConfigReader.getInstance().getProperty("DB_PASSWORD");
 				this.conn = DriverManager.getConnection(url, user, password);
+				logger.info("Loading DB connection");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

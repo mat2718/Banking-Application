@@ -1,15 +1,9 @@
 package business;
 import static org.junit.Assert.assertFalse;
-/**
- * 
- */
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
+
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -17,7 +11,7 @@ import org.junit.rules.ExpectedException;
 
 import client.Menus;
 import dao.BankDAO;
-import model.BankPOJO;
+
 
 /**
  * @author MATTH
@@ -83,7 +77,7 @@ public class BankManagerTest {
 				daoMock.accountRegistrationDB();
 				assertTrue(mockReturnObjs);
 			}else {
-				System.out.println("ERROR: Cannot transfer to closing account");
+				//System.out.println("ERROR: Cannot transfer to closing account");
 				assertFalse(mockNegativeReturnObj);
 			}
 		}catch(Exception e) {
