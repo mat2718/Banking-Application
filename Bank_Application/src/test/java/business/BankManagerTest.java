@@ -23,7 +23,7 @@ import dataAccessObject.BankDAO;
  * @author MATTH
  *
  */
-public class BankManagerTester {
+public class BankManagerTest {
 	@Rule
 	public ExpectedException exceptionRule = ExpectedException.none();
 	

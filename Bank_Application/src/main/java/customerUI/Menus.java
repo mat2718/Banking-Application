@@ -30,12 +30,9 @@ public class Menus {
 	
 	public static void main(String[] args) {
 		logger.info("Application Started");
-		
 		logger.info("Checking connections");
 		checkConnections();
-		
 		menuSplashScreen();
-
 		input.close();
 		logger.info("Application Stopped");
 		
@@ -142,7 +139,6 @@ public class Menus {
 			System.out.println("Congrats! Your all registered.");
 		} catch (Exception e) {
 			System.out.println("An unexpected error has occured.");
-			//e.printStackTrace();
 			logger.error("Unexpected error: ", e);
 			System.out.println("Registration failed. Please try Again.");
 		}finally {
