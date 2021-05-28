@@ -1,5 +1,6 @@
 package customerUI;
 
+import java.awt.EventQueue;
 import java.sql.SQLException;
 import java.util.Scanner;
 import org.apache.logging.log4j.LogManager;
@@ -33,7 +34,7 @@ public class Menus {
 		
 		logger.info("Checking connections");
 		checkConnections();
-		
+
 		menuSplashScreen();
 
 		input.close();
