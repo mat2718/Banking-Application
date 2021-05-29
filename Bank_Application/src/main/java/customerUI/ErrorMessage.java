@@ -15,34 +15,29 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JTextPane;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
-public class DataBaseConnectionError extends JDialog {
+public class ErrorMessage extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			DataBaseConnectionError dialog = new DataBaseConnectionError();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
 	 * Create the dialog.
 	 */
-	public DataBaseConnectionError() {
-		setBounds(100, 100, 448, 165);
+	public ErrorMessage() {
+		setBounds(100, 100, 468, 149);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setLayout(new FlowLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
+		{
+			JLabel erroricon = new JLabel("");
+			Image icon = new ImageIcon(this.getClass().getResource("/error-icon.png")).getImage();
+			erroricon.setIcon(new ImageIcon(icon));
+			contentPanel.add(erroricon);
+		}
 		{
 			JTextArea lblNewLabel = new JTextArea("Oops! It looks like an error has occured.\r\n"
 								+ "Please view the log file for more information.");
@@ -60,6 +55,11 @@ public class DataBaseConnectionError extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("OK");
+				okButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						System.exit(0);
+					}
+				});
 				okButton.setBackground(Color.LIGHT_GRAY);
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);

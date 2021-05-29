@@ -34,10 +34,11 @@ public class BankManager {
 	//======================================================================================
 	
 	// validate insert into customer table
-	public boolean loginValidation() throws Exception {
+	public boolean loginValidation(String password) throws Exception {
 		logger.debug("Received login credentials sending to DB to validate request.");
+		BankDAO dao = new BankDAO();
 		// delegating call to DAO
-		return dao.loginValidationDB();
+		return dao.loginValidationDB(password);
 	}
 			
 	//======================================================================================

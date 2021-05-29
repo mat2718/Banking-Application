@@ -26,7 +26,7 @@ import java.awt.event.KeyEvent;
 public class RegistrationMenu {
 
 	JFrame frmMemberRegistration;
-	private JPasswordField passwordField;
+	private JTextField passwordField;
 	private JPasswordField passwordField_1;
 	private JTextField email;
 	private JTextField textField;
@@ -105,7 +105,7 @@ public class RegistrationMenu {
 		pswdmatches.setBounds(332, 221, 23, 14);
 		frmMemberRegistration.getContentPane().add(pswdmatches);
 		
-		passwordField = new JPasswordField();
+		passwordField = new JTextField();
 		passwordField.setBounds(139, 193, 183, 20);
 		frmMemberRegistration.getContentPane().add(passwordField);
 		

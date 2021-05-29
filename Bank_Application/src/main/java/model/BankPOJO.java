@@ -3,7 +3,7 @@ package model;
 public class BankPOJO {
 	
 	final int status = 1;
-	private String email;
+	private static String email;
 	private String deleteMemberId;
 	private String password;
 	private String firstName;
@@ -11,7 +11,7 @@ public class BankPOJO {
 	private String accountType;
 	private Float balance;
 	private Float newBalance;
-	private int memberType;
+	private static int memberType;
 	private int bankId;
 	private int deleteBankId;
 	private int sendingBankId; 
@@ -30,7 +30,7 @@ public class BankPOJO {
 		return email;
 	}
 	public void setEmail(String email) {
-		this.email = email;
+		BankPOJO.email = email;
 	}
 	public String getPassword() {
 		return password;
@@ -126,7 +126,7 @@ public class BankPOJO {
 		return memberType;
 	}
 	public void setMemberType(int memberType) {
-		this.memberType = memberType;
+		BankPOJO.memberType = memberType;
 	}
 	public float getSendingAmount() {
 		return sendingAmount;

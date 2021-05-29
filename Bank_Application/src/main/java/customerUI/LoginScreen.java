@@ -12,6 +12,10 @@ import java.awt.Image;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
+
+import business.BankManager;
+import model.BankPOJO;
+
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 
@@ -19,20 +23,79 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import net.miginfocom.swing.MigLayout;
+import util.ConfigReader;
+import util.DBConnection;
+
 import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.SwingConstants;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
+import javax.swing.JDialog;
+
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
 public class LoginScreen {
 
+	private static final Logger logger = LogManager.getLogger(Menus.class);
+	
 	JFrame frmLoginMenu;
 	private JTextField email;
-	private JPasswordField passwordField;
+	private JTextField passwordField;
 
+	public static void main(String[] args) {
+		logger.info("Application Started");
+		logger.info("Checking connections");
+		checkConnections();
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					LoginScreen window = new LoginScreen();
+					window.frmLoginMenu.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		logger.info("Application Stopped");
+		
+	}
+	
+	//======================================================================================
+	// Start up (check connection/ splash screen
+	//======================================================================================
+	public static void checkConnections() {
+		try {
+			logger.info("Getting instance of ConfigReader");
+			ConfigReader.getInstance();
+			logger.info("ConfigReader instance established");
+			logger.info("Getting instance of DBConnection");
+			DBConnection.getInstance();
+			logger.info("DBConnection instance established");
+		} catch (Exception e) {
+			if (e instanceof SQLException) {
+				try {
+					ErrorMessage dialog = new ErrorMessage();
+					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setVisible(true);
+				} catch (Exception p) {
+					p.printStackTrace();
+				}
+				logger.info("ERROR: " + e.getLocalizedMessage());
+			}
+			logger.error("Unexpected Error", e);
+		} finally {
+			//input.close();
+		}
+		
+		//logger.info("Application Stopped");
+	}
 
 	/**
 	 * Create the application.
@@ -82,14 +145,56 @@ public class LoginScreen {
 		lblNewLabel_3.setBounds(63, 168, 61, 20);
 		frmLoginMenu.getContentPane().add(lblNewLabel_3);
 		
-		passwordField = new JPasswordField();
+		passwordField = new JTextField();
 		passwordField.setBounds(134, 168, 182, 20);
 		frmLoginMenu.getContentPane().add(passwordField);
 		
 		JButton submitlogin = new JButton("Login");
 		submitlogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				logger.info("Login Screen Displayed");
+				BankPOJO pojo = new BankPOJO();
+				BankManager manager = new BankManager();
+				pojo.setEmail(email.getText());
+				try {
+					if(manager.loginValidation(passwordField.getText())) {
+						switch(pojo.getMemberType()) {
+						case 1:
+							frmLoginMenu.setVisible(false);
+							EventQueue.invokeLater(new Runnable() {
+								public void run() {
+									try {
+										CustomerMainPage window = new CustomerMainPage();
+										window.frame.setVisible(true);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+								}
+							});
+							break;
+						case 2:
+							ManagementMenus.mainManagementMenu(); 
+							break;
+						case 3:
+							//admin menu goes here
+							break;
+						default:
+							// this occurs when member type is either wrong or not created
+							System.out.println("member type not defined. Please try Again.");
+//							loginMenu();
+						}
+					}else {
+						// this will run when someone mistypes the password
+						System.out.println("Login failed. Please try Again.");
+//						loginMenu();
+					}
+				} catch (Exception q) {
+					// this will usually run if someone mistypes the email
+					logger.error("Unexpected error: ", q);
+					System.out.println("Login failed. Please try Again.");
+				}finally {
+//					menuSplashScreen();
+				}
 			}
 		});
 		submitlogin.setBackground(Color.LIGHT_GRAY);

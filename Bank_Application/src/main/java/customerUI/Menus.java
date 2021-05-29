@@ -3,6 +3,9 @@ package customerUI;
 import java.awt.EventQueue;
 import java.sql.SQLException;
 import java.util.Scanner;
+
+import javax.swing.JDialog;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,11 +27,11 @@ public class Menus {
 	
 	private static final Logger logger = LogManager.getLogger(Menus.class);
 	
-//	static Scanner input = new Scanner(System.in);
-//	public static BankPOJO pojo = new BankPOJO();
-//	static BankManager manager = new BankManager();
-//	static ManagementMenus mgmt = new ManagementMenus();
-//	static CustomerMenus customer = new CustomerMenus();
+	static Scanner input = new Scanner(System.in);
+	public static BankPOJO pojo = new BankPOJO();
+	static BankManager manager = new BankManager();
+	static ManagementMenus mgmt = new ManagementMenus();
+	static CustomerMenus customer = new CustomerMenus();
 	
 	public static void main(String[] args) {
 		logger.info("Application Started");
@@ -44,9 +47,6 @@ public class Menus {
 				}
 			}
 		});
-		menuSplashScreen();
-
-		input.close();
 		logger.info("Application Stopped");
 		
 	}
@@ -64,10 +64,14 @@ public class Menus {
 			logger.info("DBConnection instance established");
 		} catch (Exception e) {
 			if (e instanceof SQLException) {
-				
-				
-				System.out.println("ERROR: " + e.getLocalizedMessage());
-				System.exit(0);
+				try {
+					ErrorMessage dialog = new ErrorMessage();
+					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setVisible(true);
+				} catch (Exception p) {
+					p.printStackTrace();
+				}
+				logger.info("ERROR: " + e.getLocalizedMessage());
 			}
 			logger.error("Unexpected Error", e);
 		} finally {
@@ -174,6 +178,8 @@ public class Menus {
 		username = input.next();
 		System.out.println("Please enter your password:\r\n");
 		pswd = input.next();
+		BankPOJO pojo = new BankPOJO();
+		BankManager manager = new BankManager();
 		pojo.setEmail(username);
 		pojo.setPassword(pswd);
 		

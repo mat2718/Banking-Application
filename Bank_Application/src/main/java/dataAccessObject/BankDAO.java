@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import customerUI.Menus;
+import model.BankPOJO;
 import util.DBConnection;
 
 /**
@@ -93,9 +94,10 @@ public class BankDAO {
 	// ======================================================================================
 
 	// query an account and return false if nothing is there or the password entered doesnt match the password stored
-	public boolean loginValidationDB() throws Exception {
+	public boolean loginValidationDB(String password) throws Exception {
 		logger.debug("Comparing login credentials with database");
 		Connection con = DBConnection.getInstance().getConnection();
+		BankPOJO pojo = new BankPOJO();
 		String sql = "SELECT email,password, status, member_type FROM member_account WHERE email = ?";
 		logger.debug(sql);
 		PreparedStatement pstmt = con.prepareStatement(sql);
@@ -103,8 +105,8 @@ public class BankDAO {
 		ResultSet checked = pstmt.executeQuery();
 		checked.next();
 		int status = checked.getInt(3);
-		Menus.pojo.setMemberType(checked.getInt(3));
-		return checked.getString(2).equals(Menus.pojo.getPassword()) && status == 1;
+		pojo.setMemberType(checked.getInt(3));
+		return checked.getString(2).equals(password) && status == 1;
 	}
 
 	// validate access to account
