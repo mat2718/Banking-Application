@@ -24,17 +24,26 @@ public class Menus {
 	
 	private static final Logger logger = LogManager.getLogger(Menus.class);
 	
-	static Scanner input = new Scanner(System.in);
-	public static BankPOJO pojo = new BankPOJO();
-	static BankManager manager = new BankManager();
-	static ManagementMenus mgmt = new ManagementMenus();
-	static CustomerMenus customer = new CustomerMenus();
+//	static Scanner input = new Scanner(System.in);
+//	public static BankPOJO pojo = new BankPOJO();
+//	static BankManager manager = new BankManager();
+//	static ManagementMenus mgmt = new ManagementMenus();
+//	static CustomerMenus customer = new CustomerMenus();
+	
 	public static void main(String[] args) {
 		logger.info("Application Started");
-		
 		logger.info("Checking connections");
 		checkConnections();
-
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					LoginScreen window = new LoginScreen();
+					window.frmLoginMenu.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 		menuSplashScreen();
 
 		input.close();
@@ -55,6 +64,8 @@ public class Menus {
 			logger.info("DBConnection instance established");
 		} catch (Exception e) {
 			if (e instanceof SQLException) {
+				
+				
 				System.out.println("ERROR: " + e.getLocalizedMessage());
 				System.exit(0);
 			}

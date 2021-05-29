@@ -20,10 +20,12 @@ import java.util.Arrays;
 import java.awt.event.InputMethodEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class RegistrationMenu {
 
-	private JFrame frmMemberRegistration;
+	JFrame frmMemberRegistration;
 	private JPasswordField passwordField;
 	private JPasswordField passwordField_1;
 	private JTextField email;
@@ -33,25 +35,8 @@ public class RegistrationMenu {
 	private JTextField textField_3;
 	private JTextField textField_4;
 
-	/**
-	 * Launch the application.
-	 */
-	public void start() {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					RegistrationMenu window = new RegistrationMenu();
-					window.frmMemberRegistration.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the application.
-	 */
+	
+	
 	public RegistrationMenu() {
 		initialize();
 	}
@@ -104,8 +89,9 @@ public class RegistrationMenu {
 		frmMemberRegistration.getContentPane().add(lblNewLabel_2);
 		
 		JLabel lblNewLabel_3 = new JLabel("Confirm Password: *");
+		lblNewLabel_3.setVisible(false);
 		lblNewLabel_3.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel_3.setBounds(26, 221, 103, 14);
+		lblNewLabel_3.setBounds(10, 221, 119, 14);
 		frmMemberRegistration.getContentPane().add(lblNewLabel_3);
 		
 		JLabel lblNewLabel_5 = new JLabel("Account Information");
@@ -113,56 +99,21 @@ public class RegistrationMenu {
 		lblNewLabel_5.setBounds(20, 146, 302, 14);
 		frmMemberRegistration.getContentPane().add(lblNewLabel_5);
 		
-//		JLabel pswdmatches = new JLabel("");
-////		Image deny = new ImageIcon(this.getClass().getResource("/deny-icon.png")).getImage();
-////		pswdmatches.setIcon(new ImageIcon(deny));
-//		pswdmatches.setBounds(332, 221, 23, 14);
-//		frmMemberRegistration.getContentPane().add(pswdmatches);
+		JLabel pswdmatches = new JLabel("");
+//		Image deny = new ImageIcon(this.getClass().getResource("/deny-icon.png")).getImage();
+//		pswdmatches.setIcon(new ImageIcon(deny));
+		pswdmatches.setBounds(332, 221, 23, 14);
+		frmMemberRegistration.getContentPane().add(pswdmatches);
 		
 		passwordField = new JPasswordField();
 		passwordField.setBounds(139, 193, 183, 20);
 		frmMemberRegistration.getContentPane().add(passwordField);
 		
 		passwordField_1 = new JPasswordField();
-		passwordField_1.addInputMethodListener(new InputMethodListener() {
-			public void caretPositionChanged(InputMethodEvent event) {
-				if (Arrays.equals(passwordField.getPassword(), passwordField_1.getPassword())) {
-					// save data
-					JLabel pswdmatches = new JLabel("");
-					Image accept = new ImageIcon(this.getClass().getResource("/accept-icon.png")).getImage();
-					pswdmatches.setIcon(new ImageIcon(accept));
-					pswdmatches.setBounds(332, 221, 23, 14);
-					frmMemberRegistration.getContentPane().add(pswdmatches);
-				} else {
-					// do other stuff
-					JLabel pswdmatches = new JLabel("");
-					Image deny = new ImageIcon(this.getClass().getResource("/deny-icon.png")).getImage();
-					pswdmatches.setIcon(new ImageIcon(deny));
-					pswdmatches.setBounds(332, 221, 23, 14);
-					frmMemberRegistration.getContentPane().add(pswdmatches);
-				}
-			}
-			public void inputMethodTextChanged(InputMethodEvent event) {
-				if (Arrays.equals(passwordField.getPassword(), passwordField_1.getPassword())) {
-					// save data
-					JLabel pswdmatches = new JLabel("");
-					Image accept = new ImageIcon(this.getClass().getResource("/accept-icon.png")).getImage();
-					pswdmatches.setIcon(new ImageIcon(accept));
-					pswdmatches.setBounds(332, 221, 23, 14);
-					frmMemberRegistration.getContentPane().add(pswdmatches);
-				} else {
-					// do other stuff
-					JLabel pswdmatches = new JLabel("");
-					Image deny = new ImageIcon(this.getClass().getResource("/deny-icon.png")).getImage();
-					pswdmatches.setIcon(new ImageIcon(deny));
-					pswdmatches.setBounds(332, 221, 23, 14);
-					frmMemberRegistration.getContentPane().add(pswdmatches);
-				}
-			}
-		});
+		passwordField_1.setVisible(false);
 		passwordField_1.setBounds(139, 218, 183, 20);
 		frmMemberRegistration.getContentPane().add(passwordField_1);
-		
+	
 		email = new JTextField();
 		email.setBounds(138, 168, 184, 20);
 		frmMemberRegistration.getContentPane().add(email);

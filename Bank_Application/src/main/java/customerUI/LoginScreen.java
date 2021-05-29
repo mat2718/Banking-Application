@@ -29,25 +29,10 @@ import java.awt.event.ActionEvent;
 
 public class LoginScreen {
 
-	private JFrame frmLoginMenu;
+	JFrame frmLoginMenu;
 	private JTextField email;
 	private JPasswordField passwordField;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					LoginScreen window = new LoginScreen();
-					window.frmLoginMenu.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the application.
@@ -116,7 +101,16 @@ public class LoginScreen {
 		register.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frmLoginMenu.setVisible(false);    //setVisible(false);
-				new RegistrationMenu().start();;//.setVisible(true); // Main Form to show after the Login Form..
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							RegistrationMenu window = new RegistrationMenu();
+							window.frmMemberRegistration.setVisible(true);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
 			}
 		});
 		register.setBackground(Color.LIGHT_GRAY);
